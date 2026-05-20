@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Search — sell on amazon</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #202124; font-family: Arial, sans-serif; color: #e8eaed; font-size: 14px; }
+  .g-header { position: sticky; top: 0; z-index: 100; background: #202124; border-bottom: 1px solid #3c4043; padding: 8px 16px 0; }
+  .g-top { display: flex; align-items: center; gap: 14px; padding-bottom: 8px; }
+  .g-logo { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; white-space: nowrap; }
+  .g-logo .b1{color:#4285f4}.g-logo .b2{color:#ea4335}.g-logo .b3{color:#fbbc04}.g-logo .b4{color:#4285f4}.g-logo .b5{color:#34a853}.g-logo .b6{color:#ea4335}
+  .g-search { display: flex; align-items: center; flex: 1; background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 7px 16px; gap: 8px; max-width: 580px; }
+  .g-search span { color: #e8eaed; font-size: 14px; flex: 1; }
+  .g-search-icons { display: flex; gap: 10px; }
+  .g-search-icon { color: #9aa0a6; font-size: 16px; cursor: pointer; }
+  .g-tabs { display: flex; gap: 2px; }
+  .g-tab { color: #9aa0a6; font-size: 13px; padding: 8px 12px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .g-tab.active { color: #8ab4f8; border-bottom-color: #8ab4f8; }
+  .g-tab:hover:not(.active) { color: #e8eaed; background: rgba(255,255,255,0.05); border-radius: 4px 4px 0 0; }
+  .g-body { display: flex; max-width: 1100px; padding: 14px 16px 40px; }
+  .g-left { flex: 1; min-width: 0; max-width: 750px; }
+  .result-count { color: #9aa0a6; font-size: 13px; margin-bottom: 14px; }
+  .zone { cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.15s, background 0.15s; }
+  .zone:hover { border-color: rgba(138,180,248,0.3); background: rgba(255,255,255,0.03); }
+  .zone.clicked { border-color: #8ab4f8; }
+  /* AI */
+  .ai-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .ai-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .ai-gem { width: 20px; height: 20px; flex-shrink: 0; background: linear-gradient(135deg, #4285f4 0%, #9b59b6 40%, #ea4335 70%, #fbbc04 100%); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+  .ai-head-label { font-size: 15px; font-weight: 500; color: #e8eaed; }
+  .ai-body { font-size: 13px; color: #bdc1c6; line-height: 1.6; }
+  .ai-sources { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .ai-source-pill { background: #3c4043; border-radius: 16px; padding: 3px 10px; font-size: 11px; color: #9aa0a6; }
+  .ai-bullet-list { margin-top: 10px; }
+  .ai-bullet { font-size: 13px; color: #bdc1c6; line-height: 1.6; margin-bottom: 10px; padding-left: 16px; position: relative; }
+  .ai-bullet::before { content: "•"; color: #8ab4f8; position: absolute; left: 0; top: 0; }
+  /* AI two-column layout */
+  .ai-layout { display: flex; gap: 16px; align-items: flex-start; }
+  .ai-main { flex: 1; min-width: 0; }
+  .ai-sidebar { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .ai-cite-card { background: #3c4043; border-radius: 8px; padding: 10px 12px; position: relative; }
+  .ai-cite-card-inner { display: flex; gap: 8px; align-items: flex-start; }
+  .ai-cite-thumb { width: 56px; height: 56px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-cite-content { flex: 1; min-width: 0; }
+  .ai-cite-title { font-size: 12px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-cite-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ai-cite-source { display: flex; align-items: center; gap: 5px; }
+  .ai-cite-fav { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-cite-name { font-size: 11px; color: #9aa0a6; }
+  .ai-cite-dots { position: absolute; top: 8px; right: 8px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+  /* AI cite carousel (bottom cards) */
+  .ai-carousel { display: flex; gap: 10px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .ai-carousel::-webkit-scrollbar { display: none; }
+  .ai-carousel-card { background: #3c4043; border-radius: 10px; padding: 12px 14px; min-width: 200px; max-width: 220px; flex-shrink: 0; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+  .ai-carousel-card-inner { display: flex; gap: 10px; align-items: flex-start; }
+  .ai-carousel-thumb { width: 80px; height: 80px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-carousel-title { font-size: 13px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-carousel-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 8px; }
+  .ai-carousel-source { display: flex; align-items: center; gap: 5px; }
+  .ai-carousel-fav { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-carousel-name { font-size: 11px; color: #9aa0a6; }
+  .ai-carousel-dots { position: absolute; bottom: 12px; right: 12px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+  .ai-carousel-next { width: 32px; height: 32px; background: #3c4043; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #e8eaed; font-size: 16px; cursor: pointer; flex-shrink: 0; align-self: center; }
+  /* AI footer */
+  .ai-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid #3c4043; }
+  .ai-footer-note { font-size: 12px; color: #9aa0a6; }
+  .ai-footer-note a { color: #8ab4f8; text-decoration: none; }
+  .ai-footer-actions { display: flex; gap: 12px; align-items: center; }
+  .ai-footer-btn { color: #9aa0a6; font-size: 18px; cursor: pointer; }
+  /* AI ask box */
+  .ai-ask-box { background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 12px 18px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; cursor: text; }
+  .ai-ask-placeholder { color: #9aa0a6; font-size: 14px; }
+  /* AI source badge top right */
+  .ai-source-badge { display: flex; align-items: center; gap: 4px; background: #3c4043; border-radius: 16px; padding: 3px 8px; font-size: 11px; color: #9aa0a6; margin-left: auto; }
+  .ai-source-badge-icon { width: 18px; height: 18px; border-radius: 50%; background: #c8102e; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  /* AI inline link */
+  .ai-link { color: #8ab4f8; text-decoration: underline; cursor: pointer; }
+  /* AI bullet bold */
+  .ai-bullet b { color: #e8eaed; }
+  /* AI table */
+  .ai-section-title { font-size: 15px; font-weight: 600; color: #e8eaed; margin: 14px 0 8px; }
+  .ai-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .ai-table th { font-size: 12px; color: #9aa0a6; font-weight: 500; text-align: left; padding: 6px 10px; border-bottom: 1px solid #3c4043; }
+  .ai-table td { font-size: 12px; color: #bdc1c6; padding: 8px 10px; border-bottom: 1px solid #2a2b2d; vertical-align: top; }
+  .ai-table td:first-child { color: #8ab4f8; font-weight: 500; }
+  .ai-divider { border: none; border-top: 1px solid #3c4043; margin: 12px 0; }
+  /* Organic */
+  .organic { padding: 10px 8px; margin-bottom: 4px; }
+  .site-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .favicon { width: 16px; height: 16px; border-radius: 50%; background: #5f6368; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+  .favicon.gap { background: #1a1a2e; color: #8ab4f8; }
+  .site-name { color: #bdc1c6; font-size: 13px; font-weight: 500; }
+  .site-url { color: #9aa0a6; font-size: 12px; }
+  .result-title { color: #8ab4f8; font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
+  .snippet { color: #bdc1c6; font-size: 13px; line-height: 1.6; }
+  .snippet b { color: #e8eaed; }
+  .snippet a { color: #8ab4f8; text-decoration: none; }
+  .three-dot { color: #9aa0a6; font-size: 14px; float: right; cursor: pointer; padding: 2px 6px; }
+  .sitelinks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 8px; }
+  .sitelink-item { border-left: 3px solid #3c4043; padding-left: 8px; }
+  .sitelink-title { color: #8ab4f8; font-size: 13px; }
+  .sitelink-snippet { color: #9aa0a6; font-size: 12px; line-height: 1.4; }
+  /* PAA */
+  .paa-block { background: #2d2e30; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .paa-title { font-size: 15px; font-weight: 500; color: #e8eaed; padding: 14px 16px 10px; }
+  .paa-item { border-top: 1px solid #3c4043; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; font-size: 14px; color: #bdc1c6; }
+  .paa-item:hover { background: rgba(255,255,255,0.04); }
+  /* Related */
+  .related-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .related-title { font-size: 15px; font-weight: 500; color: #e8eaed; margin-bottom: 10px; }
+  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .related-item { background: #3c4043; border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #bdc1c6; cursor: pointer; }
+  .related-item:hover { background: #444; }
+  /* Pagination */
+  .pagination { display: flex; align-items: center; justify-content: center; margin: 28px 0 20px; }
+  .g-wordmark { font-size: 22px; font-weight: 500; margin-right: 24px; }
+  .page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px; cursor: pointer; color: #8ab4f8; }
+  .page-btn:hover { background: rgba(138,180,248,0.1); }
+  .page-btn.active { background: #8ab4f8; color: #202124; font-weight: 500; }
+  .page-nav { padding: 6px 10px; color: #8ab4f8; font-size: 14px; cursor: pointer; }
+  /* Toast */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 10px 20px; font-size: 13px; color: #e8eaed; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 200; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .toast-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .toast-dot.ai { background: #8ab4f8; }
+  .toast-dot.organic { background: #81c995; }
+  .toast-dot.sponsored { background: #f28b82; }
+  .g-footer { border-top: 1px solid #3c4043; padding: 14px 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .g-footer a { color: #9aa0a6; font-size: 13px; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="g-header">
+  <div class="g-top">
+    <div class="g-logo"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+    <div class="g-search">
+      <span>sell on amazon</span>
+      <div class="g-search-icons"><span class="g-search-icon">✕</span><span class="g-search-icon">🎤</span><span class="g-search-icon">🔍</span></div>
+    </div>
+  </div>
+  <div class="g-tabs">
+    <div class="g-tab">AI Mode</div><div class="g-tab active">All</div><div class="g-tab">Shopping</div>
+    <div class="g-tab">Images</div><div class="g-tab">Short videos</div><div class="g-tab">Videos</div>
+    <div class="g-tab">News</div><div class="g-tab">More ∨</div><div class="g-tab">Tools ∨</div>
+  </div>
+</header>
+
+<div class="g-body">
+  <div class="g-left">
+    <div class="result-count">About 2,340,000,000 results (0.51 seconds)</div>
+
+    <!-- AI OVERVIEW -->
+    <div class="zone ai-block" id="15">
+      <div class="ai-head">
+        <div class="ai-gem"></div>
+        <span class="ai-head-label">AI Overview</span>
+        <div class="ai-source-badge">
+          <div class="ai-source-badge-icon" style="background:transparent;padding:0;width:18px;height:18px;overflow:hidden;border-radius:50%;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="9" cy="9" r="9" fill="#fff"/>
+  <text x="9" y="11.5" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="10" font-weight="900" fill="#232f3e">a</text>
+  <path d="M4 13.5 Q9 16 14 13.5" stroke="#FF9900" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <polygon points="13.2,12.2 14.5,13.5 13.2,14.8" fill="#FF9900"/>
+</svg></div>
+          <span>+5</span>
+        </div>
+        <span style="margin-left:8px;color:#9aa0a6;font-size:18px;cursor:pointer">⋮</span>
+      </div>
+
+      <div class="ai-body" style="margin-bottom:14px">
+        To sell on Amazon, you need to <span class="ai-link">create a Seller Central account</span> and choose between an <span class="ai-link">Individual or Professional selling plan</span>. From there, you list your products, set prices, and decide how to handle fulfillment — either shipping orders yourself (FBM) or using <span class="ai-link">Fulfillment by Amazon (FBA)</span>, where Amazon stores, packs, and ships on your behalf. <span style="color:#9aa0a6;font-size:13px">🔗</span>
+      </div>
+
+      <div class="ai-section-title">Steps to Start Selling on Amazon</div>
+      <div class="ai-bullet-list" style="margin-top:8px">
+        <div class="ai-bullet"><b>Create a Seller Account:</b> Go to <span class="ai-link">sell.amazon.com</span> and register. You'll need a business email, bank account, government ID, tax information, and a credit card.</div>
+        <div class="ai-bullet"><b>Choose a Selling Plan:</b> The <b>Individual plan</b> costs $0.99 per item sold (best for under 40 sales/month). The <b>Professional plan</b> is $39.99/month flat with access to advanced tools, ads, and Buy Box eligibility.</div>
+        <div class="ai-bullet"><b>List Your Products:</b> Add items via Seller Central using an existing ASIN or create a new listing. Include title, images, bullet points, description, and keywords.</div>
+        <div class="ai-bullet"><b>Select a Fulfillment Method:</b> With <span class="ai-link">FBA</span>, Amazon handles storage, shipping, and customer service. With FBM, you ship directly to buyers and manage returns yourself.</div>
+      </div>
+
+      <div class="ai-section-title" style="margin-top:16px">Key Costs &amp; Fees</div>
+      <div class="ai-body" style="margin-top:8px">
+        Amazon charges a <b>referral fee</b> (typically 8–15% of the sale price depending on category), plus FBA fees if applicable. Additional costs may include storage fees, advertising spend, and returns processing. Use the <span class="ai-link">Amazon Revenue Calculator</span> to estimate your margins before listing.
+      </div>
+
+      <div class="ai-carousel">
+        <div class="ai-carousel-card">
+          <div class="ai-carousel-title">Start Selling on Amazon Today – Seller Central</div>
+          <div class="ai-carousel-snippet">Create your Amazon seller account and start listing products in minutes.</div>
+          <div class="ai-carousel-source">
+            <div class="ai-carousel-fav" style="background:transparent;padding:0;overflow:hidden;width:16px;height:16px;border-radius:50%;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="8" cy="8" r="8" fill="#fff"/>
+  <text x="8" y="10" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#232f3e">a</text>
+  <path d="M3.5 12 Q8 14.5 12.5 12" stroke="#FF9900" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  <polygon points="12,11 13.2,12 12,13" fill="#FF9900"/>
+</svg></div>
+            <span class="ai-carousel-name">Amazon Seller Central</span>
+          </div>
+          <span class="ai-carousel-dots">⋮</span>
+        </div>
+        <div class="ai-carousel-card" style="min-width:260px;max-width:280px">
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="flex:1;min-width:0">
+              <div class="ai-carousel-title">How to Sell on Amazon FBA in 2026</div>
+              <div class="ai-carousel-snippet">Complete step-by-step guide to launching your Amazon FBA business from scratch…</div>
+              <div class="ai-carousel-source">
+                <div class="ai-carousel-fav" style="background:#1565c0">JS</div>
+                <span class="ai-carousel-name">Jungle Scout</span>
+              </div>
+            </div>
+            <div style="width:72px;height:72px;border-radius:6px;overflow:hidden;flex-shrink:0">
+              <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                <rect width="72" height="72" fill="#ff9900"/>
+                <text x="36" y="28" text-anchor="middle" font-family="Arial" font-size="18" font-weight="900" fill="#000">FBA</text>
+                <rect x="10" y="35" width="52" height="3" rx="1.5" fill="#000" opacity="0.3"/>
+                <path d="M10 45 Q36 38 62 45" stroke="#000" stroke-width="2.5" fill="none" opacity="0.5"/>
+                <polygon points="58,42 64,45 60,49" fill="#000" opacity="0.5"/>
+                <text x="36" y="62" text-anchor="middle" font-family="Arial" font-size="8" fill="#000" opacity="0.7">Fulfillment by Amazon</text>
+              </svg>
+            </div>
+          </div>
+          <span class="ai-carousel-dots">⋮</span>
+        </div>
+        <div class="ai-carousel-card">
+          <div class="ai-carousel-title">Amazon Seller Fees Explained – 2026 Guide</div>
+          <div class="ai-carousel-snippet">Referral fees, FBA fees, storage costs — everything you need to know before you list.</div>
+          <div class="ai-carousel-source">
+            <div class="ai-carousel-fav" style="background:#e91e63">H</div>
+            <span class="ai-carousel-name">Helium 10</span>
+          </div>
+          <span class="ai-carousel-dots">⋮</span>
+        </div>
+        <div class="ai-carousel-next">›</div>
+      </div>
+
+      <div class="ai-footer">
+        <div class="ai-footer-note">AI responses may include mistakes. <a href="#">Learn more</a></div>
+        <div class="ai-footer-actions">
+          <span class="ai-footer-btn">↗</span>
+          <span class="ai-footer-btn">👍</span>
+          <span class="ai-footer-btn">👎</span>
+        </div>
+      </div>
+      <div class="ai-ask-box">
+        <span class="ai-ask-placeholder">Ask anything</span>
+        <span style="color:#9aa0a6;font-size:18px">🎤</span>
+      </div>
+    </div>
+
+    <!-- ORGANIC 1 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:transparent;padding:0;overflow:hidden;border-radius:50%"><svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="8" cy="8" r="8" fill="#fff"/>
+  <text x="8" y="10" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#232f3e">a</text>
+  <path d="M3.5 12 Q8 14.5 12.5 12" stroke="#FF9900" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  <polygon points="12,11 13.2,12 12,13" fill="#FF9900"/>
+</svg></div><div><div class="site-name">Amazon Seller Central</div><div class="site-url">https://sell.amazon.com › start-selling</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Start Selling on Amazon | Amazon Seller Central</div>
+      <div class="snippet">Start selling on Amazon today. <b>Choose a selling plan, list your first product, and reach millions of US customers.</b> Individual plan: $0.99/item. Professional plan: $39.99/mo. <a>Learn more</a></div>
+      <div class="sitelinks">
+        <div class="sitelink-item"><div class="sitelink-title">Sign Up – Seller Central</div><div class="sitelink-snippet">Create your free Amazon seller account</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">FBA Overview</div><div class="sitelink-snippet">Let Amazon handle storage, shipping &amp; returns</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Pricing &amp; Fees</div><div class="sitelink-snippet">Referral fees, FBA rates and selling plans</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Seller University</div><div class="sitelink-snippet">Free training videos for new sellers</div></div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 2 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:transparent;padding:0;overflow:hidden;border-radius:50%"><svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="8" cy="8" r="8" fill="#fff"/>
+  <text x="8" y="10" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#232f3e">a</text>
+  <path d="M3.5 12 Q8 14.5 12.5 12" stroke="#FF9900" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  <polygon points="12,11 13.2,12 12,13" fill="#FF9900"/>
+</svg></div><div><div class="site-name">Amazon</div><div class="site-url">https://www.amazon.com › gp › seller › registration</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Sell on Amazon: A Step-by-Step Guide for 2026</div>
+      <div class="snippet">Learn <b>how to list products, manage inventory, and fulfill orders</b> on Amazon. Covers individual vs. professional accounts, FBA vs. FBM, and tips for new sellers in the US marketplace. <a>Read more</a></div>
+    </div>
+
+    <!-- PEOPLE ALSO ASK -->
+    <div class="paa-block">
+      <div class="paa-title">People also ask</div>
+      <div class="paa-item">How much does it cost to sell on Amazon? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Is it still profitable to sell on Amazon in 2026? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">How do beginners sell on Amazon? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">What percentage does Amazon take from sellers? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Do I need an LLC to sell on Amazon? <span style="color:#9aa0a6">∨</span></div>
+    </div>
+
+    <!-- ORGANIC 3 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#1565c0">JS</div><div><div class="site-name">Jungle Scout</div><div class="site-url">https://www.junglescout.com › blog › how-to-sell-on-amazon</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Sell on Amazon in 2026: The Complete Beginner's Guide</div>
+      <div class="snippet">Everything you need to start selling on Amazon — from <b>finding a profitable product niche</b> to setting up FBA logistics. Includes real data from 3,500+ Amazon sellers surveyed in 2026. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 4 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#e91e63">H</div><div><div class="site-name">Helium 10</div><div class="site-url">https://www.helium10.com › blog › how-to-sell-on-amazon</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Sell on Amazon FBA: Ultimate 2026 Guide | Helium 10</div>
+      <div class="snippet">Step-by-step breakdown of launching an Amazon FBA business. Covers <b>product research, supplier sourcing, listing optimization, PPC advertising</b>, and scaling strategies for US sellers. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 5 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#ff4500">R</div><div><div class="site-name">Reddit</div><div class="site-url">https://www.reddit.com › r › FulfillmentByAmazon</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">r/FulfillmentByAmazon — Is selling on Amazon still worth it in 2026?</div>
+      <div class="snippet">Top-voted comment: "Yes, but margins are tighter. <b>FBA fees went up again in January</b>, so you need to be more selective with product categories. Private label still works if you find a niche." 2.4k upvotes. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 6 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#0070ba">NB</div><div><div class="site-name">NerdBusiness</div><div class="site-url">https://nerdbusiness.com › sell-on-amazon</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Sell on Amazon: Costs, Fees &amp; Real Profit Margins (2026)</div>
+      <div class="snippet">A transparent breakdown of what it actually costs to sell on Amazon in the US — <b>referral fees (8–15%), FBA fees, PPC budgets, and realistic net margins</b> across 12 product categories. Updated May 2026. <a>Read more</a></div>
+    </div>
+
+    <!-- RELATED -->
+    <div class="related-block">
+      <div class="related-title">Related searches</div>
+      <div class="related-grid">
+        <div class="related-item">🔍 sell on amazon for free</div>
+        <div class="related-item">🔍 sell on amazon FBA</div>
+        <div class="related-item">🔍 how to sell on amazon as individual</div>
+        <div class="related-item">🔍 amazon seller fees 2026</div>
+        <div class="related-item">🔍 sell on amazon vs eBay</div>
+        <div class="related-item">🔍 how to sell on amazon step by step</div>
+        <div class="related-item">🔍 sell on amazon from home</div>
+        <div class="related-item">🔍 amazon seller central login</div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <div class="g-wordmark"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+      <div style="display:flex">
+        <div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div>
+        <div class="page-btn">4</div><div class="page-btn">5</div><div class="page-btn">6</div>
+        <div class="page-btn">7</div><div class="page-btn">8</div><div class="page-btn">9</div><div class="page-btn">10</div>
+      </div>
+      <div class="page-nav">Next ›</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="g-footer">
+  <span style="color:#9aa0a6;font-size:12px;width:100%;margin-bottom:4px">🌍 New York, NY — From your IP address</span>
+  <a href="#">Help</a><a href="#">Send feedback</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Settings</a>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-dot" id="toast-dot"></div>
+  <span id="toast-msg">–</span>
+</div>
+
+<script>
+var toastTimer;
+var firstClickDone = false; // lock: only the FIRST click copies to clipboard
+
+// ── Walk up the DOM to find the nearest zone id ───────────────────────
+function resolveZoneId(el) {
+  var ignored = ['toast','toast-dot','toast-msg'];
+  if (el.id && ignored.indexOf(el.id) === -1) return el.id;
+  var node = el.parentElement;
+  while (node && node !== document.body) {
+    if (node.id && ignored.indexOf(node.id) === -1) return node.id;
+    node = node.parentElement;
+  }
+  return null; // clicked outside a named zone (e.g. footer, tabs)
+}
+
+// ── Show toast ────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var dot = document.getElementById('toast-dot');
+  dot.className = 'toast-dot ' + (type || '');
+  document.getElementById('toast-msg').innerHTML = msg;
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
+
+// ── Global click listener ─────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  var zoneId = resolveZoneId(e.target);
+  if (!zoneId) return; // ignore clicks outside named zones
+
+  var type = zoneId === '15' ? 'ai'
+           : zoneId === '25' ? 'organic'
+           : 'other';
+
+  if (!firstClickDone) {
+    // ── FIRST CLICK: copy id to clipboard ──────────────────────────
+    firstClickDone = true;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(zoneId).then(function() {
+        showToast(
+          '✅ <strong>First click saved!</strong> &nbsp;Code copied: ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      }).catch(function() {
+        // Fallback for browsers that block clipboard without gesture
+        fallbackCopy(zoneId);
+        showToast(
+          '✅ <strong>First click saved:</strong> ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      });
+    } else {
+      fallbackCopy(zoneId);
+      showToast(
+        '✅ <strong>First click saved:</strong> ' +
+        '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+        type
+      );
+    }
+
+    // Also notify Qualtrics parent if embedded in iframe
+    window.parent.postMessage({ clicked_result: zoneId }, '*');
+
+  } else {
+    // ── SUBSEQUENT CLICKS: visual feedback only, no clipboard ──────
+    showToast(
+      '🔒 Already recorded — first click was locked in. ' +
+      '<span style="opacity:0.6;font-size:11px">(' + zoneId + ' ignored)</span>',
+      ''
+    );
+  }
+});
+
+// ── Textarea fallback for clipboard ──────────────────────────────────
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── Named zone tracker (visual highlight on zone cards) ───────────────
+function track(zoneId, label, type, el) {
+  if (!firstClickDone) {
+    // highlight stays on first clicked zone only
+    document.querySelectorAll('.zone').forEach(function(z){ z.classList.remove('clicked'); });
+    el.classList.add('clicked');
+  }
+}
+</script>
+</body>
+</html>

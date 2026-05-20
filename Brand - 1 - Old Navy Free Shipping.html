@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Search — old navy free shipping</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #202124; font-family: Arial, sans-serif; color: #e8eaed; font-size: 14px; }
+  .g-header { position: sticky; top: 0; z-index: 100; background: #202124; border-bottom: 1px solid #3c4043; padding: 8px 16px 0; }
+  .g-top { display: flex; align-items: center; gap: 14px; padding-bottom: 8px; }
+  .g-logo { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; white-space: nowrap; }
+  .g-logo .b1{color:#4285f4}.g-logo .b2{color:#ea4335}.g-logo .b3{color:#fbbc04}.g-logo .b4{color:#4285f4}.g-logo .b5{color:#34a853}.g-logo .b6{color:#ea4335}
+  .g-search { display: flex; align-items: center; flex: 1; background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 7px 16px; gap: 8px; max-width: 580px; }
+  .g-search span { color: #e8eaed; font-size: 14px; flex: 1; }
+  .g-search-icons { display: flex; gap: 10px; }
+  .g-search-icon { color: #9aa0a6; font-size: 16px; cursor: pointer; }
+  .g-tabs { display: flex; gap: 2px; }
+  .g-tab { color: #9aa0a6; font-size: 13px; padding: 8px 12px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .g-tab.active { color: #8ab4f8; border-bottom-color: #8ab4f8; }
+  .g-tab:hover:not(.active) { color: #e8eaed; background: rgba(255,255,255,0.05); border-radius: 4px 4px 0 0; }
+  .g-body { display: flex; max-width: 1100px; padding: 14px 16px 40px; }
+  .g-left { flex: 1; min-width: 0; max-width: 750px; }
+  .result-count { color: #9aa0a6; font-size: 13px; margin-bottom: 14px; }
+  .zone { cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.15s, background 0.15s; }
+  .zone:hover { border-color: rgba(138,180,248,0.3); background: rgba(255,255,255,0.03); }
+  .zone.clicked { border-color: #8ab4f8; }
+  /* AI */
+  .ai-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .ai-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .ai-gem { width: 18px; height: 18px; border-radius: 4px; background: conic-gradient(#4285f4 0deg, #9b59b6 90deg, #ea4335 180deg, #fbbc04 270deg, #4285f4 360deg); flex-shrink: 0; }
+  .ai-head-label { font-size: 15px; font-weight: 500; color: #e8eaed; }
+  .ai-body { font-size: 13px; color: #bdc1c6; line-height: 1.6; }
+  .ai-sources { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .ai-source-pill { background: #3c4043; border-radius: 16px; padding: 3px 10px; font-size: 11px; color: #9aa0a6; }
+  .ai-bullet-list { margin-top: 10px; }
+  .ai-bullet { display: flex; gap: 8px; font-size: 13px; color: #bdc1c6; line-height: 1.55; margin-bottom: 6px; }
+  .ai-bullet::before { content: "•"; color: #8ab4f8; flex-shrink: 0; }
+  /* AI two-column layout */
+  .ai-layout { display: flex; gap: 16px; align-items: flex-start; }
+  .ai-main { flex: 1; min-width: 0; }
+  .ai-sidebar { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .ai-cite-card { background: #3c4043; border-radius: 8px; padding: 10px 12px; position: relative; }
+  .ai-cite-card-inner { display: flex; gap: 8px; align-items: flex-start; }
+  .ai-cite-thumb { width: 56px; height: 56px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-cite-content { flex: 1; min-width: 0; }
+  .ai-cite-title { font-size: 12px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-cite-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ai-cite-source { display: flex; align-items: center; gap: 5px; }
+  .ai-cite-fav { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-cite-name { font-size: 11px; color: #9aa0a6; }
+  .ai-cite-dots { position: absolute; top: 8px; right: 8px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+  /* AI table */
+  .ai-section-title { font-size: 15px; font-weight: 600; color: #e8eaed; margin: 14px 0 8px; }
+  .ai-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .ai-table th { font-size: 12px; color: #9aa0a6; font-weight: 500; text-align: left; padding: 6px 10px; border-bottom: 1px solid #3c4043; }
+  .ai-table td { font-size: 12px; color: #bdc1c6; padding: 8px 10px; border-bottom: 1px solid #2a2b2d; vertical-align: top; }
+  .ai-table td:first-child { color: #8ab4f8; font-weight: 500; }
+  .ai-divider { border: none; border-top: 1px solid #3c4043; margin: 12px 0; }
+  /* Organic */
+  .organic { padding: 10px 8px; margin-bottom: 4px; }
+  .site-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .favicon { width: 16px; height: 16px; border-radius: 50%; background: #5f6368; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+  .favicon.gap { background: #1a1a2e; color: #8ab4f8; }
+  .site-name { color: #bdc1c6; font-size: 13px; font-weight: 500; }
+  .site-url { color: #9aa0a6; font-size: 12px; }
+  .result-title { color: #8ab4f8; font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
+  .snippet { color: #bdc1c6; font-size: 13px; line-height: 1.6; }
+  .snippet b { color: #e8eaed; }
+  .snippet a { color: #8ab4f8; text-decoration: none; }
+  .three-dot { color: #9aa0a6; font-size: 14px; float: right; cursor: pointer; padding: 2px 6px; }
+  .sitelinks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 8px; }
+  .sitelink-item { border-left: 3px solid #3c4043; padding-left: 8px; }
+  .sitelink-title { color: #8ab4f8; font-size: 13px; }
+  .sitelink-snippet { color: #9aa0a6; font-size: 12px; line-height: 1.4; }
+  /* PAA */
+  .paa-block { background: #2d2e30; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .paa-title { font-size: 15px; font-weight: 500; color: #e8eaed; padding: 14px 16px 10px; }
+  .paa-item { border-top: 1px solid #3c4043; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; font-size: 14px; color: #bdc1c6; }
+  .paa-item:hover { background: rgba(255,255,255,0.04); }
+  /* Related */
+  .related-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .related-title { font-size: 15px; font-weight: 500; color: #e8eaed; margin-bottom: 10px; }
+  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .related-item { background: #3c4043; border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #bdc1c6; cursor: pointer; }
+  .related-item:hover { background: #444; }
+  /* Pagination */
+  .pagination { display: flex; align-items: center; justify-content: center; margin: 28px 0 20px; }
+  .g-wordmark { font-size: 22px; font-weight: 500; margin-right: 24px; }
+  .page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px; cursor: pointer; color: #8ab4f8; }
+  .page-btn:hover { background: rgba(138,180,248,0.1); }
+  .page-btn.active { background: #8ab4f8; color: #202124; font-weight: 500; }
+  .page-nav { padding: 6px 10px; color: #8ab4f8; font-size: 14px; cursor: pointer; }
+  /* Toast */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 10px 20px; font-size: 13px; color: #e8eaed; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 200; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .toast-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .toast-dot.ai { background: #8ab4f8; }
+  .toast-dot.organic { background: #81c995; }
+  .toast-dot.sponsored { background: #f28b82; }
+  .g-footer { border-top: 1px solid #3c4043; padding: 14px 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .g-footer a { color: #9aa0a6; font-size: 13px; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="g-header">
+  <div class="g-top">
+    <div class="g-logo"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+    <div class="g-search">
+      <span>old navy free shipping</span>
+      <div class="g-search-icons"><span class="g-search-icon">✕</span><span class="g-search-icon">🎤</span><span class="g-search-icon">🔍</span></div>
+    </div>
+  </div>
+  <div class="g-tabs">
+    <div class="g-tab">AI Mode</div><div class="g-tab active">All</div><div class="g-tab">Shopping</div>
+    <div class="g-tab">Images</div><div class="g-tab">Short videos</div><div class="g-tab">Videos</div>
+    <div class="g-tab">News</div><div class="g-tab">More ∨</div><div class="g-tab">Tools ∨</div>
+  </div>
+</header>
+
+<div class="g-body">
+  <div class="g-left">
+    <div class="result-count">About 147,000,000 results (0.42 seconds)</div>
+
+    <!-- AI OVERVIEW -->
+    <div class="zone ai-block" id="15">
+      <div class="ai-head"><div class="ai-gem"></div><span class="ai-head-label">AI Overview</span><span style="margin-left:auto;color:#9aa0a6;font-size:18px;cursor:pointer">⋮</span></div>
+      <div class="ai-layout">
+        <div class="ai-main">
+          <div class="ai-body">Old Navy offers everyday free shipping on online orders of $50 or more. You can also get free shipping with no minimum spend by signing up for their Navyist Rewards membership or by using an Old Navy Rewards Credit Card. <span style="display:inline-flex;align-items:center;gap:4px;background:#3c4043;border-radius:12px;padding:2px 8px;font-size:11px;color:#9aa0a6;vertical-align:middle"><span style="background:#1a73e8;color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:2px">F</span> Forbes</span></div>
+          <div class="ai-section-title">Current Free Shipping Options</div>
+          <table class="ai-table">
+            <thead><tr><th>Shipping Offer <span style="font-size:10px;opacity:0.5">🔗</span></th><th>Minimum Spend Required</th><th>Requirements / Details</th></tr></thead>
+            <tbody>
+              <tr><td>Everyday Free Shipping</td><td>$50</td><td>Valid online at oldnavy.com on qualifying merchandise. Select free standard shipping at checkout.</td></tr>
+              <tr><td>Navyist Rewards Members</td><td>$0 (no minimum)</td><td>Free on all orders — join the Navyist Rewards programme for free to unlock this perk automatically.</td></tr>
+              <tr><td>Old Navy Credit Card</td><td>$0 (no minimum)</td><td>Cardholders get free shipping on every order, plus earn 5 points per $1 spent at Old Navy.</td></tr>
+              <tr><td>Promotional Offers</td><td>Varies</td><td>Old Navy regularly runs site-wide free shipping events — check the homepage or sign up for emails.</td></tr>
+            </tbody>
+          </table>
+          <div class="ai-bullet-list">
+            <div class="ai-bullet">Returns are always free — return any item in-store or by mail within 45 days at no cost.</div>
+            <div class="ai-bullet">Expedited shipping (2-day or overnight) is available at extra charge regardless of membership status.</div>
+            <div class="ai-bullet">Free shipping thresholds apply after discounts and before taxes on your order total.</div>
+          </div>
+          <div class="ai-sources" style="margin-top:10px"><span class="ai-source-pill">🌐 Old Navy Canada +2</span><span class="ai-source-pill">🌐 oldnavy.gap.com</span><span class="ai-source-pill">🌐 Forbes</span></div>
+        </div>
+        <div class="ai-sidebar">
+          <div class="ai-cite-card">
+            <span class="ai-cite-dots">⋮</span>
+            <div class="ai-cite-title">Every Day Free Shipping - Old Navy</div>
+            <div class="ai-cite-snippet">FREE RETURNS… Everyday Free Shipping is valid online only at bananarepublic.ca, oldnavy.ca and gapcanada.ca on purchases of…</div>
+            <div class="ai-cite-source"><div class="ai-cite-fav" style="background:#34a853">O</div><span class="ai-cite-name">Old Navy Canada</span></div>
+          </div>
+          <div class="ai-cite-card">
+            <span class="ai-cite-dots">⋮</span>
+            <div class="ai-cite-card-inner">
+              <div class="ai-cite-content">
+                <div class="ai-cite-title">30% Off - Old Navy Promo Codes March 2026 - Forbes Vetted</div>
+                <div class="ai-cite-snippet">5 Feb 2026 — If you routinely shop the site, it might be worth opening an Old Navy Rewards Credit Card. On…</div>
+                <div class="ai-cite-source"><div class="ai-cite-fav" style="background:#1a73e8">F</div><span class="ai-cite-name">Forbes</span></div>
+              </div>
+              <div class="ai-cite-thumb">
+                <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" fill="#cc0000"/><ellipse cx="22" cy="22" rx="10" ry="13" fill="#e8c49a"/><rect x="12" y="33" width="20" height="16" rx="1" fill="#222"/><rect x="30" y="16" width="14" height="2" rx="1" fill="#666"/><rect x="30" y="21" width="12" height="2" rx="1" fill="#666"/><rect x="30" y="26" width="13" height="2" rx="1" fill="#666"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 1 -->
+    <div class="zone organic" id="25" >
+      <div class="site-row"><div class="favicon gap">G</div><div><div class="site-name">Old Navy</div><div class="site-url">https://oldnavy.gap.com › customerService › info</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Everyday Free Shipping | Old Navy - Gap</div>
+      <div class="snippet">Rewards Members, shipping is on us! <b>Free shipping on all Rewards Members' orders of $50 or more*</b>; Qualifying items ship free. <a>Read more</a></div>
+      <div class="sitelinks">
+        <div class="sitelink-item"><div class="sitelink-title">Navyist Rewards</div><div class="sitelink-snippet">Free shipping on every order $0+</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Shipping &amp; Returns</div><div class="sitelink-snippet">Standard, express &amp; overnight</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Old Navy Credit Card</div><div class="sitelink-snippet">Free shipping + 5 points per $1</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Current Promotions</div><div class="sitelink-snippet">See all active shipping offers</div></div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 2 -->
+    <div class="zone organic" id="25" >
+      <div class="site-row"><div class="favicon gap">G</div><div><div class="site-name">Old Navy</div><div class="site-url">https://oldnavy.gap.com › edfsLegal-ON-Narvar-122419</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Free Shipping on all orders over $25 - Old Navy - Gap</div>
+      <div class="snippet">SHIPPING IS ON US! · <b>FREE on orders of $25 or more.</b> Select the FREE (5-7 business days) option · $7 flat rate for orders under $25. <a>Read more</a></div>
+    </div>
+
+    <!-- PEOPLE ALSO ASK -->
+    <div class="paa-block">
+      <div class="paa-title">People also ask</div>
+      <div class="paa-item">How do you get free shipping on Old Navy? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">How to get 20% off Old Navy? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Does Old Navy have free shipping right now in 2026? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">What is Old Navy's minimum order for free shipping? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Is Old Navy Navyist Rewards free to join? <span style="color:#9aa0a6">∨</span></div>
+    </div>
+
+    <!-- ORGANIC 3 -->
+    <div class="zone organic" id="25" >
+      <div class="site-row"><div class="favicon" style="background:#e91e63">R</div><div><div class="site-name">RetailMeNot</div><div class="site-url">https://www.retailmenot.com › old-navy-free-shipping</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Old Navy Free Shipping: Every Way to Get It in 2026</div>
+      <div class="snippet">The easiest way to get Old Navy free shipping is to <b>spend $50 or more</b>. You can also unlock <b>unlimited free shipping</b> as a Navyist Rewards member at no cost. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 4 -->
+    <div class="zone organic" id="25" >
+      <div class="site-row"><div class="favicon" style="background:#ff6f00">H</div><div><div class="site-name">Honey</div><div class="site-url">https://www.joinhoney.com › coupons › old-navy</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Old Navy Promo Codes &amp; Coupons — May 2026</div>
+      <div class="snippet">30 Old Navy promo codes for May 2026. Top coupon: <b>Free Shipping on orders $25+</b>. Members get an extra 20% off. Verified 2 hours ago. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 5 -->
+    <div class="zone organic" id="25" >
+      <div class="site-row"><div class="favicon" style="background:#1565c0">S</div><div><div class="site-name">Slickdeals</div><div class="site-url">https://slickdeals.net › coupons › old-navy</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Old Navy Coupons: 40% Off — May 2026 | Slickdeals</div>
+      <div class="snippet">Today's top deal: <b>Free standard shipping on all orders</b> — no minimum required this weekend only. Community-verified. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 6 -->
+    <div class="zone organic" id="25" >
+      <div class="site-row"><div class="favicon" style="background:#b92b27">Q</div><div><div class="site-name">Quora</div><div class="site-url">https://www.quora.com › Does-Old-Navy-offer-free-shipping</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Does Old Navy offer free shipping? - Quora</div>
+      <div class="snippet">Yes — Old Navy offers free standard shipping on orders over $50. Navyist Rewards members get <b>free shipping on all orders</b>, no minimum. <a>Read more</a></div>
+    </div>
+
+    <!-- RELATED -->
+    <div class="related-block">
+      <div class="related-title">Related searches</div>
+      <div class="related-grid">
+        <div class="related-item">🔍 old navy free shipping code</div>
+        <div class="related-item">🔍 old navy free shipping no minimum</div>
+        <div class="related-item">🔍 old navy navyist rewards free shipping</div>
+        <div class="related-item">🔍 old navy shipping cost 2026</div>
+        <div class="related-item">🔍 gap free shipping policy</div>
+        <div class="related-item">🔍 old navy promo code today</div>
+        <div class="related-item">🔍 does old navy ship to canada free</div>
+        <div class="related-item">🔍 old navy credit card free shipping</div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <div class="g-wordmark"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+      <div style="display:flex">
+        <div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div>
+        <div class="page-btn">4</div><div class="page-btn">5</div><div class="page-btn">6</div>
+        <div class="page-btn">7</div><div class="page-btn">8</div><div class="page-btn">9</div><div class="page-btn">10</div>
+      </div>
+      <div class="page-nav">Next ›</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="g-footer">
+  <span style="color:#9aa0a6;font-size:12px;width:100%;margin-bottom:4px">🌍 Edinburgh, Scotland — From your IP address</span>
+  <a href="#">Help</a><a href="#">Send feedback</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Settings</a>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-dot" id="toast-dot"></div>
+  <span id="toast-msg">–</span>
+</div>
+
+<script>
+var toastTimer;
+var firstClickDone = false; // lock: only the FIRST click copies to clipboard
+
+// ── Walk up the DOM to find the nearest zone id ───────────────────────
+function resolveZoneId(el) {
+  var ignored = ['toast','toast-dot','toast-msg'];
+  if (el.id && ignored.indexOf(el.id) === -1) return el.id;
+  var node = el.parentElement;
+  while (node && node !== document.body) {
+    if (node.id && ignored.indexOf(node.id) === -1) return node.id;
+    node = node.parentElement;
+  }
+  return null; // clicked outside a named zone (e.g. footer, tabs)
+}
+
+// ── Show toast ────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var dot = document.getElementById('toast-dot');
+  dot.className = 'toast-dot ' + (type || '');
+  document.getElementById('toast-msg').innerHTML = msg;
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
+
+// ── Global click listener ─────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  var zoneId = resolveZoneId(e.target);
+  if (!zoneId) return; // ignore clicks outside named zones
+
+  var type = zoneId === '15' ? 'ai'
+           : zoneId === '25' ? 'organic'
+           : 'other';
+
+  if (!firstClickDone) {
+    // ── FIRST CLICK: copy id to clipboard ──────────────────────────
+    firstClickDone = true;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(zoneId).then(function() {
+        showToast(
+          '✅ <strong>First click saved!</strong> &nbsp;Code copied: ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      }).catch(function() {
+        // Fallback for browsers that block clipboard without gesture
+        fallbackCopy(zoneId);
+        showToast(
+          '✅ <strong>First click saved:</strong> ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      });
+    } else {
+      fallbackCopy(zoneId);
+      showToast(
+        '✅ <strong>First click saved:</strong> ' +
+        '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+        type
+      );
+    }
+
+    // Also notify Qualtrics parent if embedded in iframe
+    window.parent.postMessage({ clicked_result: zoneId }, '*');
+
+  } else {
+    // ── SUBSEQUENT CLICKS: visual feedback only, no clipboard ──────
+    showToast(
+      '🔒 Already recorded — first click was locked in. ' +
+      '<span style="opacity:0.6;font-size:11px">(' + zoneId + ' ignored)</span>',
+      ''
+    );
+  }
+});
+
+// ── Textarea fallback for clipboard ──────────────────────────────────
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── Named zone tracker (visual highlight on zone cards) ───────────────
+function track(zoneId, label, type, el) {
+  if (!firstClickDone) {
+    // highlight stays on first clicked zone only
+    document.querySelectorAll('.zone').forEach(function(z){ z.classList.remove('clicked'); });
+    el.classList.add('clicked');
+  }
+}
+</script>
+</body>
+</html>

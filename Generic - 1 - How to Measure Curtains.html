@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Search — how to measure curtains</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #202124; font-family: Arial, sans-serif; color: #e8eaed; font-size: 14px; }
+  .g-header { position: sticky; top: 0; z-index: 100; background: #202124; border-bottom: 1px solid #3c4043; padding: 8px 16px 0; }
+  .g-top { display: flex; align-items: center; gap: 14px; padding-bottom: 8px; }
+  .g-logo { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; white-space: nowrap; }
+  .g-logo .b1{color:#4285f4}.g-logo .b2{color:#ea4335}.g-logo .b3{color:#fbbc04}.g-logo .b4{color:#4285f4}.g-logo .b5{color:#34a853}.g-logo .b6{color:#ea4335}
+  .g-search { display: flex; align-items: center; flex: 1; background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 7px 16px; gap: 8px; max-width: 580px; }
+  .g-search span { color: #e8eaed; font-size: 14px; flex: 1; }
+  .g-search-icons { display: flex; gap: 10px; }
+  .g-search-icon { color: #9aa0a6; font-size: 16px; cursor: pointer; }
+  .g-tabs { display: flex; gap: 2px; }
+  .g-tab { color: #9aa0a6; font-size: 13px; padding: 8px 12px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .g-tab.active { color: #8ab4f8; border-bottom-color: #8ab4f8; }
+  .g-tab:hover:not(.active) { color: #e8eaed; background: rgba(255,255,255,0.05); border-radius: 4px 4px 0 0; }
+  .g-body { display: flex; max-width: 1100px; padding: 14px 16px 40px; }
+  .g-left { flex: 1; min-width: 0; max-width: 750px; }
+  .result-count { color: #9aa0a6; font-size: 13px; margin-bottom: 14px; }
+  .zone { cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.15s, background 0.15s; }
+  .zone:hover { border-color: rgba(138,180,248,0.3); background: rgba(255,255,255,0.03); }
+  .zone.clicked { border-color: #8ab4f8; }
+  /* AI */
+  .ai-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .ai-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .ai-gem { width: 20px; height: 20px; flex-shrink: 0; background: linear-gradient(135deg, #4285f4 0%, #9b59b6 40%, #ea4335 70%, #fbbc04 100%); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+  .ai-head-label { font-size: 15px; font-weight: 500; color: #e8eaed; }
+  .ai-body { font-size: 13px; color: #bdc1c6; line-height: 1.6; }
+  .ai-sources { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .ai-source-pill { background: #3c4043; border-radius: 16px; padding: 3px 10px; font-size: 11px; color: #9aa0a6; }
+  .ai-bullet-list { margin-top: 10px; }
+  .ai-bullet { font-size: 13px; color: #bdc1c6; line-height: 1.6; margin-bottom: 10px; padding-left: 16px; position: relative; }
+  .ai-bullet::before { content: "•"; color: #8ab4f8; position: absolute; left: 0; top: 0; }
+  /* AI two-column layout */
+  .ai-layout { display: flex; gap: 16px; align-items: flex-start; }
+  .ai-main { flex: 1; min-width: 0; }
+  .ai-sidebar { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .ai-cite-card { background: #3c4043; border-radius: 8px; padding: 10px 12px; position: relative; }
+  .ai-cite-card-inner { display: flex; gap: 8px; align-items: flex-start; }
+  .ai-cite-thumb { width: 56px; height: 56px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-cite-content { flex: 1; min-width: 0; }
+  .ai-cite-title { font-size: 12px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-cite-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ai-cite-source { display: flex; align-items: center; gap: 5px; }
+  .ai-cite-fav { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-cite-name { font-size: 11px; color: #9aa0a6; }
+  .ai-cite-dots { position: absolute; top: 8px; right: 8px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+
+  /* AI two-col with right source panel */
+  .ai-two-col { display: flex; gap: 20px; align-items: flex-start; }
+  .ai-two-col-main { flex: 1; min-width: 0; }
+  .ai-two-col-side { width: 280px; flex-shrink: 0; }
+  /* Numbered section headings */
+  .ai-num-heading { font-size: 16px; font-weight: 700; color: #e8eaed; margin: 18px 0 6px; }
+  /* Inline source pill */
+  .ai-pill { display: inline-flex; align-items: center; gap: 3px; background: #3c4043; border-radius: 12px; padding: 1px 7px; font-size: 10px; color: #9aa0a6; vertical-align: middle; margin-left: 4px; cursor: pointer; }
+  .ai-pill img, .ai-pill-fav { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  /* Highlighted cited text */
+  .ai-highlight { background: rgba(66,133,244,0.25); border-radius: 2px; color: #8ab4f8; }
+  /* Right source cards panel */
+  .ai-source-panel { background: #2d2e30; border-radius: 10px; overflow: hidden; }
+  .ai-source-item { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-bottom: 1px solid #3c4043; cursor: pointer; }
+  .ai-source-item:hover { background: rgba(255,255,255,0.04); }
+  .ai-source-item:last-of-type { border-bottom: none; }
+  .ai-source-item-text { flex: 1; min-width: 0; }
+  .ai-source-item-title { font-size: 12px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-source-item-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ai-source-item-meta { display: flex; align-items: center; gap: 5px; }
+  .ai-source-item-fav { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-source-item-name { font-size: 11px; color: #9aa0a6; }
+  .ai-source-thumb { width: 80px; height: 56px; border-radius: 6px; overflow: hidden; flex-shrink: 0; position: relative; }
+  .ai-source-thumb-duration { position: absolute; bottom: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 3px; }
+  .ai-show-all { display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 13px; color: #9aa0a6; cursor: pointer; background: #3c4043; }
+  .ai-show-all:hover { background: #444; color: #e8eaed; }
+  /* AI cite carousel (bottom cards) */
+  .ai-carousel { display: flex; gap: 10px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .ai-carousel::-webkit-scrollbar { display: none; }
+  .ai-carousel-card { background: #3c4043; border-radius: 10px; padding: 12px 14px; min-width: 200px; max-width: 220px; flex-shrink: 0; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+  .ai-carousel-card-inner { display: flex; gap: 10px; align-items: flex-start; }
+  .ai-carousel-thumb { width: 80px; height: 80px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-carousel-title { font-size: 13px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-carousel-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 8px; }
+  .ai-carousel-source { display: flex; align-items: center; gap: 5px; }
+  .ai-carousel-fav { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-carousel-name { font-size: 11px; color: #9aa0a6; }
+  .ai-carousel-dots { position: absolute; bottom: 12px; right: 12px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+  .ai-carousel-next { width: 32px; height: 32px; background: #3c4043; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #e8eaed; font-size: 16px; cursor: pointer; flex-shrink: 0; align-self: center; }
+  /* AI footer */
+  .ai-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid #3c4043; }
+  .ai-footer-note { font-size: 12px; color: #9aa0a6; }
+  .ai-footer-note a { color: #8ab4f8; text-decoration: none; }
+  .ai-footer-actions { display: flex; gap: 12px; align-items: center; }
+  .ai-footer-btn { color: #9aa0a6; font-size: 18px; cursor: pointer; }
+  /* AI ask box */
+  .ai-ask-box { background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 12px 18px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; cursor: text; }
+  .ai-ask-placeholder { color: #9aa0a6; font-size: 14px; }
+  /* AI source badge top right */
+  .ai-source-badge { display: flex; align-items: center; gap: 4px; background: #3c4043; border-radius: 16px; padding: 3px 8px; font-size: 11px; color: #9aa0a6; margin-left: auto; }
+  .ai-source-badge-icon { width: 18px; height: 18px; border-radius: 50%; background: #c8102e; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  /* AI inline link */
+  .ai-link { color: #8ab4f8; text-decoration: underline; cursor: pointer; }
+  /* AI bullet bold */
+  .ai-bullet b { color: #e8eaed; }
+  /* AI table */
+  .ai-section-title { font-size: 15px; font-weight: 600; color: #e8eaed; margin: 14px 0 8px; }
+  .ai-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .ai-table th { font-size: 12px; color: #9aa0a6; font-weight: 500; text-align: left; padding: 6px 10px; border-bottom: 1px solid #3c4043; }
+  .ai-table td { font-size: 12px; color: #bdc1c6; padding: 8px 10px; border-bottom: 1px solid #2a2b2d; vertical-align: top; }
+  .ai-table td:first-child { color: #8ab4f8; font-weight: 500; }
+  .ai-divider { border: none; border-top: 1px solid #3c4043; margin: 12px 0; }
+  /* Organic */
+  .organic { padding: 10px 8px; margin-bottom: 4px; }
+  .site-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .favicon { width: 16px; height: 16px; border-radius: 50%; background: #5f6368; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+  .favicon.gap { background: #1a1a2e; color: #8ab4f8; }
+  .site-name { color: #bdc1c6; font-size: 13px; font-weight: 500; }
+  .site-url { color: #9aa0a6; font-size: 12px; }
+  .result-title { color: #8ab4f8; font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
+  .snippet { color: #bdc1c6; font-size: 13px; line-height: 1.6; }
+  .snippet b { color: #e8eaed; }
+  .snippet a { color: #8ab4f8; text-decoration: none; }
+  .three-dot { color: #9aa0a6; font-size: 14px; float: right; cursor: pointer; padding: 2px 6px; }
+  .sitelinks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 8px; }
+  .sitelink-item { border-left: 3px solid #3c4043; padding-left: 8px; }
+  .sitelink-title { color: #8ab4f8; font-size: 13px; }
+  .sitelink-snippet { color: #9aa0a6; font-size: 12px; line-height: 1.4; }
+  /* PAA */
+  .paa-block { background: #2d2e30; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .paa-title { font-size: 15px; font-weight: 500; color: #e8eaed; padding: 14px 16px 10px; }
+  .paa-item { border-top: 1px solid #3c4043; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; font-size: 14px; color: #bdc1c6; }
+  .paa-item:hover { background: rgba(255,255,255,0.04); }
+  /* Related */
+  .related-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .related-title { font-size: 15px; font-weight: 500; color: #e8eaed; margin-bottom: 10px; }
+  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .related-item { background: #3c4043; border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #bdc1c6; cursor: pointer; }
+  .related-item:hover { background: #444; }
+  /* Pagination */
+  .pagination { display: flex; align-items: center; justify-content: center; margin: 28px 0 20px; }
+  .g-wordmark { font-size: 22px; font-weight: 500; margin-right: 24px; }
+  .page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px; cursor: pointer; color: #8ab4f8; }
+  .page-btn:hover { background: rgba(138,180,248,0.1); }
+  .page-btn.active { background: #8ab4f8; color: #202124; font-weight: 500; }
+  .page-nav { padding: 6px 10px; color: #8ab4f8; font-size: 14px; cursor: pointer; }
+  /* Toast */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 10px 20px; font-size: 13px; color: #e8eaed; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 200; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .toast-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .toast-dot.ai { background: #8ab4f8; }
+  .toast-dot.organic { background: #81c995; }
+  .toast-dot.sponsored { background: #f28b82; }
+  .g-footer { border-top: 1px solid #3c4043; padding: 14px 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .g-footer a { color: #9aa0a6; font-size: 13px; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="g-header">
+  <div class="g-top">
+    <div class="g-logo"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+    <div class="g-search">
+      <span>how to measure curtains</span>
+      <div class="g-search-icons"><span class="g-search-icon">✕</span><span class="g-search-icon">🎤</span><span class="g-search-icon">🔍</span></div>
+    </div>
+  </div>
+  <div class="g-tabs">
+    <div class="g-tab">AI Mode</div><div class="g-tab active">All</div><div class="g-tab">Shopping</div>
+    <div class="g-tab">Images</div><div class="g-tab">Short videos</div><div class="g-tab">Videos</div>
+    <div class="g-tab">News</div><div class="g-tab">More ∨</div><div class="g-tab">Tools ∨</div>
+  </div>
+</header>
+
+<div class="g-body">
+  <div class="g-left">
+    <div class="result-count">About 412,000,000 results (0.44 seconds)</div>
+
+    <!-- AI OVERVIEW -->
+    <div class="zone ai-block" id="15">
+      <div class="ai-head">
+        <div class="ai-gem"></div>
+        <span class="ai-head-label">AI Overview</span>
+        <span style="margin-left:auto;color:#9aa0a6;font-size:18px;cursor:pointer">⋮</span>
+      </div>
+
+      <div class="ai-two-col">
+        <!-- LEFT: main content -->
+        <div class="ai-two-col-main">
+          <div class="ai-body" style="margin-bottom:12px">
+            Measuring for curtains is simple: <span class="ai-highlight">measure the width of your track or pole (not the window), and the drop from the top of the pole to your desired length</span>. Always use a metal tape measure, as cloth tapes can stretch and cause inaccuracies.
+            <span class="ai-pill"><span class="ai-pill-fav" style="background:#e53935">Y</span> YouTube · Spotlight Stores +3</span>
+          </div>
+
+          <div class="ai-body" style="margin-bottom:4px">Follow these simple steps for a perfect fit:</div>
+
+          <div class="ai-num-heading">1. Measure the Width</div>
+          <div class="ai-bullet-list">
+            <div class="ai-bullet"><b>Curtain Poles:</b> Measure the width of the pole between the two decorative ends (finials).</div>
+            <div class="ai-bullet"><b>Curtain Tracks:</b> Measure the full length of the track from end to end.</div>
+            <div class="ai-bullet"><b>Rule for Fullness:</b> The combined width of your curtains should be at least double your pole or track width to achieve a natural, gathered look when closed.
+              <span class="ai-pill"><span class="ai-pill-fav" style="background:#2e7d32">D</span> Dunelm.com +1</span>
+            </div>
+          </div>
+
+          <div class="ai-num-heading">2. Measure the Drop (Length)</div>
+          <div class="ai-body" style="margin-bottom:8px">First, decide where you want your curtains to finish, then measure from the attachment point on your pole or track:</div>
+          <div class="ai-bullet-list">
+            <div class="ai-bullet"><b>To the Sill:</b> Measure to 1 cm above the windowsill.</div>
+            <div class="ai-bullet"><b>Below the Sill:</b> Measure 15 to 20 cm below the sill to block out more light and keep them clear of any radiators.</div>
+            <div class="ai-bullet"><b>To the Floor:</b> Measure to 1 cm above the floor so they hang straight and avoid dragging.
+              <span class="ai-pill"><span class="ai-pill-fav" style="background:#6a1a6a">P</span> The Pure Edit +2</span>
+            </div>
+          </div>
+
+          <div class="ai-num-heading">3. Factor in the Heading Type</div>
+          <div class="ai-body" style="margin-bottom:8px">The header style affects where you start measuring from for your length:
+            <span class="ai-pill" style="background:#4285f4;color:#fff;border-radius:12px;padding:1px 8px;font-size:10px">Next</span>
+          </div>
+          <div class="ai-bullet-list">
+            <div class="ai-bullet"><b>Eyelet Curtains:</b> Measure from the <em>top</em> of the pole. (Note: The pole itself should sit about 15 cm above the window recess.)</div>
+            <div class="ai-bullet"><b>Pencil Pleat or Pinch Pleat:</b> Measure from the underside of the curtain ring or track glider.
+              <span class="ai-pill"><span class="ai-pill-fav" style="background:#e53935">Y</span> YouTube · Dunelm +2</span>
+            </div>
+          </div>
+
+          <div class="ai-body" style="margin-top:12px;color:#9aa0a6;font-size:12px">For more specific guidance, visual examples, or to calculate your exact sizing, check the sources in the panel or use an online curtain size calculator.</div>
+
+          <div class="ai-footer" style="margin-top:14px">
+            <div class="ai-footer-note">AI responses may include mistakes. <a href="#" style="color:#8ab4f8;text-decoration:none">Learn more</a></div>
+            <div class="ai-footer-actions">
+              <span class="ai-footer-btn">↗</span>
+              <span class="ai-footer-btn">👍</span>
+              <span class="ai-footer-btn">👎</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: source cards panel -->
+        <div class="ai-two-col-side">
+          <div class="ai-source-panel">
+            <div class="ai-source-item">
+              <div class="ai-source-item-text">
+                <div class="ai-source-item-title">How to Measure for Curtains [Guide, Calculator &amp; Videos] – Dunelm.com</div>
+                <div class="ai-source-item-snippet">As a general rule, the width of your curtains should be at least twice the width of your window (if not more)…</div>
+                <div class="ai-source-item-meta">
+                  <div class="ai-source-item-fav" style="background:#2e7d32">D</div>
+                  <span class="ai-source-item-name">Dunelm.com</span>
+                </div>
+              </div>
+              <div class="ai-source-thumb">
+                <svg width="80" height="56" viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="80" height="56" fill="#e8f5e9"/>
+                  <rect x="6" y="6" width="68" height="44" rx="2" fill="#fff" stroke="#ccc" stroke-width="0.5"/>
+                  <line x1="14" y1="16" x2="66" y2="16" stroke="#9e9e9e" stroke-width="1"/>
+                  <line x1="14" y1="24" x2="54" y2="24" stroke="#9e9e9e" stroke-width="1"/>
+                  <line x1="14" y1="32" x2="60" y2="32" stroke="#9e9e9e" stroke-width="1"/>
+                  <line x1="14" y1="40" x2="50" y2="40" stroke="#9e9e9e" stroke-width="1"/>
+                  <rect x="56" y="20" width="12" height="28" rx="1" fill="#4caf50" opacity="0.6"/>
+                  <rect x="62" y="20" width="6" height="28" rx="1" fill="#388e3c" opacity="0.6"/>
+                  <line x1="52" y1="6" x2="52" y2="50" stroke="#bbb" stroke-width="0.5" stroke-dasharray="2,2"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="ai-source-item">
+              <div class="ai-source-item-text">
+                <div class="ai-source-item-title">How To: Measure Your Windows For Curtains &amp; Blinds | Spotlight Stores</div>
+                <div class="ai-source-item-snippet">To measure windows for curtains and blinds, it is important to first identify the…</div>
+                <div class="ai-source-item-meta">
+                  <div class="ai-source-item-fav" style="background:#e53935">▶</div>
+                  <span class="ai-source-item-name">YouTube · Spotlight Stores</span>
+                </div>
+              </div>
+              <div class="ai-source-thumb" style="position:relative">
+                <svg width="80" height="56" viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="80" height="56" fill="#1a237e" opacity="0.85"/>
+                  <rect x="4" y="6" width="46" height="44" rx="2" fill="#3949ab" opacity="0.6"/>
+                  <rect x="54" y="6" width="22" height="44" rx="2" fill="#1565c0" opacity="0.5"/>
+                  <ellipse cx="55" cy="18" rx="8" ry="12" fill="#ffb74d" opacity="0.6"/>
+                  <polygon points="48,28 60,28 54,38" fill="#ff7043" opacity="0.8"/>
+                </svg>
+                <div class="ai-source-thumb-duration">1m</div>
+              </div>
+            </div>
+
+            <div class="ai-source-item">
+              <div class="ai-source-item-text">
+                <div class="ai-source-item-title">How to Measure for Eyelet Curtains</div>
+                <div class="ai-source-item-snippet">To determine the appropriate size for eyelet curtains, one should have a pen and pape…</div>
+                <div class="ai-source-item-meta">
+                  <div class="ai-source-item-fav" style="background:#e53935">▶</div>
+                  <span class="ai-source-item-name">YouTube · Dunelm</span>
+                </div>
+              </div>
+              <div class="ai-source-thumb" style="position:relative">
+                <svg width="80" height="56" viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="80" height="56" fill="#e8eaf6"/>
+                  <rect x="4" y="4" width="36" height="48" rx="2" fill="#9fa8da" opacity="0.7"/>
+                  <rect x="44" y="4" width="32" height="48" rx="2" fill="#7986cb" opacity="0.7"/>
+                  <ellipse cx="48" cy="20" rx="10" ry="13" fill="#ffcc80" opacity="0.8"/>
+                  <rect x="38" y="33" width="20" height="18" rx="1" fill="#5c6bc0" opacity="0.6"/>
+                </svg>
+                <div class="ai-source-thumb-duration">1m</div>
+              </div>
+            </div>
+
+            <div class="ai-show-all">Show all</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 1 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#2e7d32">D</div><div><div class="site-name">Dunelm</div><div class="site-url">https://www.dunelm.com › inspiration › how-to-measure-curtains</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Measure for Curtains – Complete Guide | Dunelm</div>
+      <div class="snippet">Learn how to measure curtains correctly with Dunelm's expert guide. Covers <b>width, drop, heading types and fullness ratios</b>. Includes a free online curtain size calculator. <a>Read more</a></div>
+      <div class="sitelinks">
+        <div class="sitelink-item"><div class="sitelink-title">Curtain Size Calculator</div><div class="sitelink-snippet">Enter your measurements for an instant size recommendation</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Eyelet Curtains Guide</div><div class="sitelink-snippet">How to measure and hang eyelet curtains</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Pencil Pleat Guide</div><div class="sitelink-snippet">Measuring tips for pencil pleat curtain headings</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Curtain Poles &amp; Tracks</div><div class="sitelink-snippet">Shop poles and find your correct width</div></div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 2 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#e53935">Y</div><div><div class="site-name">YouTube</div><div class="site-url">https://www.youtube.com › watch?v=howmeasurecurtains</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Measure Curtains – Step by Step | Spotlight Stores</div>
+      <div class="snippet">Video guide (1m 12s): A clear walkthrough showing <b>how to measure window width and drop</b> for both tracks and poles. Covers all heading types with on-screen diagrams. <a>Watch now</a></div>
+    </div>
+
+    <!-- PEOPLE ALSO ASK -->
+    <div class="paa-block">
+      <div class="paa-title">People also ask</div>
+      <div class="paa-item">How do you measure curtains for a window? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Should curtain width be double the window? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">How long should curtains be from the floor? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">What is the rule for curtain drop? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">How do I measure for eyelet curtains? <span style="color:#9aa0a6">∨</span></div>
+    </div>
+
+    <!-- ORGANIC 3 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#1565c0">T</div><div><div class="site-name">The Spruce</div><div class="site-url">https://www.thespruce.com › how-to-measure-for-curtains</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Measure Windows for Curtains the Right Way | The Spruce</div>
+      <div class="snippet">Our interior design experts explain <b>exactly how to measure for curtains</b>, including tips on fullness ratio, drop length, and how different heading styles affect your final measurements. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 4 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#424242">W</div><div><div class="site-name">WikiHow</div><div class="site-url">https://www.wikihow.com › Measure-for-Curtains</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Measure for Curtains: Step-by-Step with Pictures | wikiHow</div>
+      <div class="snippet">Step 1: Mount your curtain rod or track first. Step 2: <b>Measure the width of the rod or track</b> (not the window). Step 3: Multiply by 1.5–2.5 for fullness. Step 4: Measure the drop. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 5 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#6a1a6a">P</div><div><div class="site-name">The Pure Edit</div><div class="site-url">https://www.thepureedit.com › blogs › how-to-measure-for-curtains</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Measure for Curtains – The Pure Edit</div>
+      <div class="snippet">A simple, jargon-free guide to measuring your windows for curtains. Includes a <b>downloadable measurement checklist</b> and guidance on floor-to-ceiling vs sill-length styles. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 6 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#ff4500">R</div><div><div class="site-name">Reddit</div><div class="site-url">https://www.reddit.com › r › HomeDecorating › curtain_measuring</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to measure for curtains – tips from the community | r/HomeDecorating</div>
+      <div class="snippet">"Always measure the pole, not the window, and <b>add at least 15 cm either side</b> so the curtains stack back clear of the glass when open." 1.2k upvotes. <a>Read more</a></div>
+    </div>
+
+    <!-- RELATED -->
+    <div class="related-block">
+      <div class="related-title">Related searches</div>
+      <div class="related-grid">
+        <div class="related-item">🔍 how to measure curtains width</div>
+        <div class="related-item">🔍 curtain drop measurement guide</div>
+        <div class="related-item">🔍 how to measure eyelet curtains</div>
+        <div class="related-item">🔍 curtain size calculator</div>
+        <div class="related-item">🔍 how to measure pencil pleat curtains</div>
+        <div class="related-item">🔍 curtain fullness ratio explained</div>
+        <div class="related-item">🔍 how long should curtains be</div>
+        <div class="related-item">🔍 floor to ceiling curtain measurement</div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <div class="g-wordmark"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+      <div style="display:flex">
+        <div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div>
+        <div class="page-btn">4</div><div class="page-btn">5</div><div class="page-btn">6</div>
+        <div class="page-btn">7</div><div class="page-btn">8</div><div class="page-btn">9</div><div class="page-btn">10</div>
+      </div>
+      <div class="page-nav">Next ›</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="g-footer">
+  <span style="color:#9aa0a6;font-size:12px;width:100%;margin-bottom:4px">🌍 New York, NY — From your IP address</span>
+  <a href="#">Help</a><a href="#">Send feedback</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Settings</a>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-dot" id="toast-dot"></div>
+  <span id="toast-msg">–</span>
+</div>
+
+<script>
+var toastTimer;
+var firstClickDone = false; // lock: only the FIRST click copies to clipboard
+
+// ── Walk up the DOM to find the nearest zone id ───────────────────────
+function resolveZoneId(el) {
+  var ignored = ['toast','toast-dot','toast-msg'];
+  if (el.id && ignored.indexOf(el.id) === -1) return el.id;
+  var node = el.parentElement;
+  while (node && node !== document.body) {
+    if (node.id && ignored.indexOf(node.id) === -1) return node.id;
+    node = node.parentElement;
+  }
+  return null; // clicked outside a named zone (e.g. footer, tabs)
+}
+
+// ── Show toast ────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var dot = document.getElementById('toast-dot');
+  dot.className = 'toast-dot ' + (type || '');
+  document.getElementById('toast-msg').innerHTML = msg;
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
+
+// ── Global click listener ─────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  var zoneId = resolveZoneId(e.target);
+  if (!zoneId) return; // ignore clicks outside named zones
+
+  var type = zoneId === '15' ? 'ai'
+           : zoneId === '25' ? 'organic'
+           : 'other';
+
+  if (!firstClickDone) {
+    // ── FIRST CLICK: copy id to clipboard ──────────────────────────
+    firstClickDone = true;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(zoneId).then(function() {
+        showToast(
+          '✅ <strong>First click saved!</strong> &nbsp;Code copied: ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      }).catch(function() {
+        // Fallback for browsers that block clipboard without gesture
+        fallbackCopy(zoneId);
+        showToast(
+          '✅ <strong>First click saved:</strong> ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      });
+    } else {
+      fallbackCopy(zoneId);
+      showToast(
+        '✅ <strong>First click saved:</strong> ' +
+        '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+        type
+      );
+    }
+
+    // Also notify Qualtrics parent if embedded in iframe
+    window.parent.postMessage({ clicked_result: zoneId }, '*');
+
+  } else {
+    // ── SUBSEQUENT CLICKS: visual feedback only, no clipboard ──────
+    showToast(
+      '🔒 Already recorded — first click was locked in. ' +
+      '<span style="opacity:0.6;font-size:11px">(' + zoneId + ' ignored)</span>',
+      ''
+    );
+  }
+});
+
+// ── Textarea fallback for clipboard ──────────────────────────────────
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── Named zone tracker (visual highlight on zone cards) ───────────────
+function track(zoneId, label, type, el) {
+  if (!firstClickDone) {
+    // highlight stays on first clicked zone only
+    document.querySelectorAll('.zone').forEach(function(z){ z.classList.remove('clicked'); });
+    el.classList.add('clicked');
+  }
+}
+</script>
+</body>
+</html>

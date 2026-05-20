@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Search — 42 in uk shoe size</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #202124; font-family: Arial, sans-serif; color: #e8eaed; font-size: 14px; }
+  .g-header { position: sticky; top: 0; z-index: 100; background: #202124; border-bottom: 1px solid #3c4043; padding: 8px 16px 0; }
+  .g-top { display: flex; align-items: center; gap: 14px; padding-bottom: 8px; }
+  .g-logo { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; white-space: nowrap; }
+  .g-logo .b1{color:#4285f4}.g-logo .b2{color:#ea4335}.g-logo .b3{color:#fbbc04}.g-logo .b4{color:#4285f4}.g-logo .b5{color:#34a853}.g-logo .b6{color:#ea4335}
+  .g-search { display: flex; align-items: center; flex: 1; background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 7px 16px; gap: 8px; max-width: 580px; }
+  .g-search span { color: #e8eaed; font-size: 14px; flex: 1; }
+  .g-search-icons { display: flex; gap: 10px; }
+  .g-search-icon { color: #9aa0a6; font-size: 16px; cursor: pointer; }
+  .g-tabs { display: flex; gap: 2px; }
+  .g-tab { color: #9aa0a6; font-size: 13px; padding: 8px 12px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .g-tab.active { color: #8ab4f8; border-bottom-color: #8ab4f8; }
+  .g-tab:hover:not(.active) { color: #e8eaed; background: rgba(255,255,255,0.05); border-radius: 4px 4px 0 0; }
+  .g-body { display: flex; max-width: 1100px; padding: 14px 16px 40px; }
+  .g-left { flex: 1; min-width: 0; max-width: 750px; }
+  .result-count { color: #9aa0a6; font-size: 13px; margin-bottom: 14px; }
+  .zone { cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.15s, background 0.15s; }
+  .zone:hover { border-color: rgba(138,180,248,0.3); background: rgba(255,255,255,0.03); }
+  .zone.clicked { border-color: #8ab4f8; }
+  /* AI */
+  .ai-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .ai-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .ai-gem { width: 20px; height: 20px; flex-shrink: 0; background: linear-gradient(135deg, #4285f4 0%, #9b59b6 40%, #ea4335 70%, #fbbc04 100%); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+  .ai-head-label { font-size: 15px; font-weight: 500; color: #e8eaed; }
+  .ai-body { font-size: 13px; color: #bdc1c6; line-height: 1.6; }
+  .ai-sources { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .ai-source-pill { background: #3c4043; border-radius: 16px; padding: 3px 10px; font-size: 11px; color: #9aa0a6; }
+  .ai-bullet-list { margin-top: 10px; }
+  .ai-bullet { font-size: 13px; color: #bdc1c6; line-height: 1.6; margin-bottom: 10px; padding-left: 16px; position: relative; }
+  .ai-bullet::before { content: "•"; color: #8ab4f8; position: absolute; left: 0; top: 0; }
+  /* AI two-column layout */
+  .ai-layout { display: flex; gap: 16px; align-items: flex-start; }
+  .ai-main { flex: 1; min-width: 0; }
+  .ai-sidebar { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .ai-cite-card { background: #3c4043; border-radius: 8px; padding: 10px 12px; position: relative; }
+  .ai-cite-card-inner { display: flex; gap: 8px; align-items: flex-start; }
+  .ai-cite-thumb { width: 56px; height: 56px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-cite-content { flex: 1; min-width: 0; }
+  .ai-cite-title { font-size: 12px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-cite-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ai-cite-source { display: flex; align-items: center; gap: 5px; }
+  .ai-cite-fav { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-cite-name { font-size: 11px; color: #9aa0a6; }
+  .ai-cite-dots { position: absolute; top: 8px; right: 8px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+
+  /* AI two-col with right source panel */
+  .ai-two-col { display: flex; gap: 20px; align-items: flex-start; }
+  .ai-two-col-main { flex: 1; min-width: 0; }
+  .ai-two-col-side { width: 280px; flex-shrink: 0; }
+  /* Numbered section headings */
+  .ai-num-heading { font-size: 16px; font-weight: 700; color: #e8eaed; margin: 18px 0 6px; }
+  /* Inline source pill */
+  .ai-pill { display: inline-flex; align-items: center; gap: 3px; background: #3c4043; border-radius: 12px; padding: 1px 7px; font-size: 10px; color: #9aa0a6; vertical-align: middle; margin-left: 4px; cursor: pointer; }
+  .ai-pill img, .ai-pill-fav { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  /* Highlighted cited text */
+  .ai-highlight { background: rgba(66,133,244,0.25); border-radius: 2px; color: #8ab4f8; }
+  /* Right source cards panel */
+  .ai-source-panel { background: #2d2e30; border-radius: 10px; overflow: hidden; }
+  .ai-source-item { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-bottom: 1px solid #3c4043; cursor: pointer; }
+  .ai-source-item:hover { background: rgba(255,255,255,0.04); }
+  .ai-source-item:last-of-type { border-bottom: none; }
+  .ai-source-item-text { flex: 1; min-width: 0; }
+  .ai-source-item-title { font-size: 12px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-source-item-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ai-source-item-meta { display: flex; align-items: center; gap: 5px; }
+  .ai-source-item-fav { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-source-item-name { font-size: 11px; color: #9aa0a6; }
+  .ai-source-thumb { width: 80px; height: 56px; border-radius: 6px; overflow: hidden; flex-shrink: 0; position: relative; }
+  .ai-source-thumb-duration { position: absolute; bottom: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 3px; }
+
+
+  .ai-conv-table { width: 100%; border-collapse: collapse; margin: 10px 0 12px; font-size: 13px; }
+  .ai-conv-table th { text-align: left; padding: 7px 12px; color: #9aa0a6; font-weight: 500; font-size: 12px; border-bottom: 1px solid #3c4043; background: transparent; }
+  .ai-conv-table td { padding: 8px 12px; color: #e8eaed; border-bottom: 1px solid #2a2b2d; }
+  .ai-conv-table tr:last-child td { border-bottom: none; }
+  .ai-conv-table td:first-child { color: #bdc1c6; }
+  .ai-tips-heading { font-size: 14px; font-weight: 700; color: #e8eaed; margin: 14px 0 8px; }
+  .ai-sub-heading { font-size: 14px; font-weight: 700; color: #e8eaed; margin: 14px 0 6px; }
+  .ai-disclaimer { font-size: 11px; color: #9aa0a6; line-height: 1.6; margin-top: 14px; padding-top: 12px; border-top: 1px solid #3c4043; }
+  .ai-disclaimer a { color: #8ab4f8; text-decoration: none; }
+  .ai-ask-large { background: #303134; border: 1px solid #5f6368; border-radius: 16px; padding: 16px 18px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; cursor: text; min-height: 56px; }
+  .ai-show-all { display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 13px; color: #9aa0a6; cursor: pointer; background: #3c4043; }
+  .ai-show-all:hover { background: #444; color: #e8eaed; }
+  /* AI cite carousel (bottom cards) */
+  .ai-carousel { display: flex; gap: 10px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .ai-carousel::-webkit-scrollbar { display: none; }
+  .ai-carousel-card { background: #3c4043; border-radius: 10px; padding: 12px 14px; min-width: 200px; max-width: 220px; flex-shrink: 0; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+  .ai-carousel-card-inner { display: flex; gap: 10px; align-items: flex-start; }
+  .ai-carousel-thumb { width: 80px; height: 80px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-carousel-title { font-size: 13px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-carousel-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 8px; }
+  .ai-carousel-source { display: flex; align-items: center; gap: 5px; }
+  .ai-carousel-fav { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-carousel-name { font-size: 11px; color: #9aa0a6; }
+  .ai-carousel-dots { position: absolute; bottom: 12px; right: 12px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+  .ai-carousel-next { width: 32px; height: 32px; background: #3c4043; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #e8eaed; font-size: 16px; cursor: pointer; flex-shrink: 0; align-self: center; }
+  /* AI footer */
+  .ai-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid #3c4043; }
+  .ai-footer-note { font-size: 12px; color: #9aa0a6; }
+  .ai-footer-note a { color: #8ab4f8; text-decoration: none; }
+  .ai-footer-actions { display: flex; gap: 12px; align-items: center; }
+  .ai-footer-btn { color: #9aa0a6; font-size: 18px; cursor: pointer; }
+  /* AI ask box */
+  .ai-ask-box { background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 12px 18px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; cursor: text; }
+  .ai-ask-placeholder { color: #9aa0a6; font-size: 14px; }
+  /* AI source badge top right */
+  .ai-source-badge { display: flex; align-items: center; gap: 4px; background: #3c4043; border-radius: 16px; padding: 3px 8px; font-size: 11px; color: #9aa0a6; margin-left: auto; }
+  .ai-source-badge-icon { width: 18px; height: 18px; border-radius: 50%; background: #c8102e; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  /* AI inline link */
+  .ai-link { color: #8ab4f8; text-decoration: underline; cursor: pointer; }
+  /* AI bullet bold */
+  .ai-bullet b { color: #e8eaed; }
+  /* AI table */
+  .ai-section-title { font-size: 15px; font-weight: 600; color: #e8eaed; margin: 14px 0 8px; }
+  .ai-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .ai-table th { font-size: 12px; color: #9aa0a6; font-weight: 500; text-align: left; padding: 6px 10px; border-bottom: 1px solid #3c4043; }
+  .ai-table td { font-size: 12px; color: #bdc1c6; padding: 8px 10px; border-bottom: 1px solid #2a2b2d; vertical-align: top; }
+  .ai-table td:first-child { color: #8ab4f8; font-weight: 500; }
+  .ai-divider { border: none; border-top: 1px solid #3c4043; margin: 12px 0; }
+  /* Organic */
+  .organic { padding: 10px 8px; margin-bottom: 4px; }
+  .site-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .favicon { width: 16px; height: 16px; border-radius: 50%; background: #5f6368; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+  .favicon.gap { background: #1a1a2e; color: #8ab4f8; }
+  .site-name { color: #bdc1c6; font-size: 13px; font-weight: 500; }
+  .site-url { color: #9aa0a6; font-size: 12px; }
+  .result-title { color: #8ab4f8; font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
+  .snippet { color: #bdc1c6; font-size: 13px; line-height: 1.6; }
+  .snippet b { color: #e8eaed; }
+  .snippet a { color: #8ab4f8; text-decoration: none; }
+  .three-dot { color: #9aa0a6; font-size: 14px; float: right; cursor: pointer; padding: 2px 6px; }
+  .sitelinks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 8px; }
+  .sitelink-item { border-left: 3px solid #3c4043; padding-left: 8px; }
+  .sitelink-title { color: #8ab4f8; font-size: 13px; }
+  .sitelink-snippet { color: #9aa0a6; font-size: 12px; line-height: 1.4; }
+  /* PAA */
+  .paa-block { background: #2d2e30; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .paa-title { font-size: 15px; font-weight: 500; color: #e8eaed; padding: 14px 16px 10px; }
+  .paa-item { border-top: 1px solid #3c4043; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; font-size: 14px; color: #bdc1c6; }
+  .paa-item:hover { background: rgba(255,255,255,0.04); }
+  /* Related */
+  .related-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .related-title { font-size: 15px; font-weight: 500; color: #e8eaed; margin-bottom: 10px; }
+  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .related-item { background: #3c4043; border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #bdc1c6; cursor: pointer; }
+  .related-item:hover { background: #444; }
+  /* Pagination */
+  .pagination { display: flex; align-items: center; justify-content: center; margin: 28px 0 20px; }
+  .g-wordmark { font-size: 22px; font-weight: 500; margin-right: 24px; }
+  .page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px; cursor: pointer; color: #8ab4f8; }
+  .page-btn:hover { background: rgba(138,180,248,0.1); }
+  .page-btn.active { background: #8ab4f8; color: #202124; font-weight: 500; }
+  .page-nav { padding: 6px 10px; color: #8ab4f8; font-size: 14px; cursor: pointer; }
+  /* Toast */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 10px 20px; font-size: 13px; color: #e8eaed; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 200; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .toast-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .toast-dot.ai { background: #8ab4f8; }
+  .toast-dot.organic { background: #81c995; }
+  .toast-dot.sponsored { background: #f28b82; }
+  .g-footer { border-top: 1px solid #3c4043; padding: 14px 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .g-footer a { color: #9aa0a6; font-size: 13px; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="g-header">
+  <div class="g-top">
+    <div class="g-logo"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+    <div class="g-search">
+      <span>42 in uk shoe size</span>
+      <div class="g-search-icons"><span class="g-search-icon">✕</span><span class="g-search-icon">🎤</span><span class="g-search-icon">🔍</span></div>
+    </div>
+  </div>
+  <div class="g-tabs">
+    <div class="g-tab">AI Mode</div><div class="g-tab active">All</div><div class="g-tab">Shopping</div>
+    <div class="g-tab">Images</div><div class="g-tab">Short videos</div><div class="g-tab">Videos</div>
+    <div class="g-tab">News</div><div class="g-tab">More ∨</div><div class="g-tab">Tools ∨</div>
+  </div>
+</header>
+
+<div class="g-body">
+  <div class="g-left">
+    <div class="result-count">About 83,200,000 results (0.39 seconds)</div>
+
+    <!-- AI OVERVIEW -->
+    <div class="zone ai-block" id="15">
+      <div class="ai-head">
+        <div class="ai-gem"></div>
+        <span class="ai-head-label">AI Overview</span>
+        <span style="margin-left:auto;color:#9aa0a6;font-size:18px;cursor:pointer">⋮</span>
+      </div>
+
+      <div class="ai-two-col">
+        <div class="ai-two-col-main">
+
+          <div class="ai-body" style="margin-bottom:10px">
+            An EU size 42 shoe generally converts to a <span class="ai-link" style="font-weight:600">UK size 8</span>. However, this can vary slightly depending on the brand.
+            <span class="ai-pill"><span class="ai-pill-fav" style="background:#000">A</span> ASOS +2</span>
+          </div>
+
+          <div class="ai-body" style="margin-bottom:8px">Refer to this handy guide to see how size 42 lines up across different fitting scales:</div>
+
+          <table class="ai-conv-table">
+            <thead>
+              <tr>
+                <th>EU Size <span style="font-size:10px;opacity:0.5">🔗</span></th>
+                <th>UK Size</th>
+                <th>US Men's</th>
+                <th>US Women's</th>
+                <th>Foot Length (Approx.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>42</td>
+                <td>8</td>
+                <td>8.5</td>
+                <td>10</td>
+                <td>~26.2 cm to 26.6 cm</td>
+              </tr>
+              <tr>
+                <td>42.5</td>
+                <td>8.5</td>
+                <td>9</td>
+                <td>10.5</td>
+                <td>~26.6 cm to 27 cm</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="ai-body" style="margin-bottom:14px">
+            Because different manufacturers round up or down, sizing can occasionally fall into a <span class="ai-link" style="font-weight:500">UK 7.5 or UK 8.5</span> depending on the shoe's design.
+            <span style="color:#9aa0a6;font-size:13px"> 🔗</span>
+          </div>
+
+          <div class="ai-tips-heading">Quick Tips for Finding Size 42 in the UK:</div>
+          <div class="ai-bullet-list">
+            <div class="ai-bullet"><b>Online Fit Finders:</b> Most major retailers offer built-in calculators on their product pages. You can use tools like the <span class="ai-link">ASOS Size Chart</span> or the <span class="ai-link">Jones Bootmaker Men's Size Grid</span> to check exact measurements.</div>
+            <div class="ai-bullet"><b>Specialist Needs:</b> If you're looking for extra wide or specialised shoes, check the <span class="ai-link">Wide Fit Shoes Conversion Guide</span>.</div>
+            <div class="ai-bullet"><b>Measure your feet:</b> To get the most accurate fit, stand on a piece of paper, mark the heel and the tip of your longest toe, and measure the distance in millimetres before comparing it to a brand's specific chart.
+              <span style="color:#9aa0a6;font-size:13px"> 🔗</span>
+            </div>
+          </div>
+
+          <div class="ai-disclaimer">
+            AI responses may include mistakes. <a href="#">Learn more</a>
+          </div>
+          <div class="ai-footer" style="margin-top:10px;padding-top:0;border-top:none">
+            <div style="flex:1"></div>
+            <div class="ai-footer-actions">
+              <span class="ai-footer-btn">↗</span>
+              <span class="ai-footer-btn">👍</span>
+              <span class="ai-footer-btn">👎</span>
+            </div>
+          </div>
+
+          <div class="ai-ask-large">
+            <span class="ai-ask-placeholder">Ask anything</span>
+            <span style="color:#9aa0a6;font-size:20px">🎤</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: source cards -->
+        <div class="ai-two-col-side">
+          <div class="ai-source-panel">
+
+            <div class="ai-source-item">
+              <div class="ai-source-item-text">
+                <div class="ai-source-item-title">Men's Shoe Size Charts – ASOS</div>
+                <div class="ai-source-item-snippet">Table_title: Conversion &amp; Measurement Chart Table_content: header: | UK Size | EU Size | Foot…</div>
+                <div class="ai-source-item-meta">
+                  <div class="ai-source-item-fav" style="background:#000">A</div>
+                  <span class="ai-source-item-name">ASOS</span>
+                </div>
+              </div>
+              <div class="ai-source-thumb">
+                <svg width="80" height="56" viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="80" height="56" fill="#fff"/>
+                  <rect x="4" y="4" width="72" height="48" rx="2" fill="#f5f5f5" stroke="#ddd" stroke-width="0.5"/>
+                  <rect x="4" y="4" width="72" height="12" fill="#eee"/>
+                  <line x1="22" y1="4" x2="22" y2="52" stroke="#ddd" stroke-width="0.5"/>
+                  <line x1="40" y1="4" x2="40" y2="52" stroke="#ddd" stroke-width="0.5"/>
+                  <line x1="58" y1="4" x2="58" y2="52" stroke="#ddd" stroke-width="0.5"/>
+                  <line x1="4" y1="16" x2="76" y2="16" stroke="#ddd" stroke-width="0.5"/>
+                  <line x1="4" y1="28" x2="76" y2="28" stroke="#ddd" stroke-width="0.5"/>
+                  <line x1="4" y1="40" x2="76" y2="40" stroke="#ddd" stroke-width="0.5"/>
+                  <text x="8" y="11" font-family="Arial" font-size="5" fill="#666">UK</text>
+                  <text x="26" y="11" font-family="Arial" font-size="5" fill="#666">EU</text>
+                  <text x="44" y="11" font-family="Arial" font-size="5" fill="#666">US</text>
+                  <text x="62" y="11" font-family="Arial" font-size="5" fill="#666">CM</text>
+                  <text x="8" y="24" font-family="Arial" font-size="6" fill="#333">8</text>
+                  <text x="26" y="24" font-family="Arial" font-size="6" fill="#333">42</text>
+                  <text x="44" y="24" font-family="Arial" font-size="6" fill="#333">8.5</text>
+                  <text x="62" y="24" font-family="Arial" font-size="6" fill="#333">26.2</text>
+                </svg>
+              </div>
+            </div>
+
+            <div class="ai-source-item">
+              <div class="ai-source-item-text">
+                <div class="ai-source-item-title">Women's Footwear Size Chart | Hush Puppies UK</div>
+                <div class="ai-source-item-snippet">Table_title: Womens Table_content: header: | US | UK | EU | row: US: 7 | UK: 5 | EU: 38 | row: | UK: 6 | EU: 39 | row:…</div>
+                <div class="ai-source-item-meta">
+                  <div class="ai-source-item-fav" style="background:#795548">HP</div>
+                  <span class="ai-source-item-name">Hush Puppies UK</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="ai-source-item">
+              <div class="ai-source-item-text">
+                <div class="ai-source-item-title">Shoe Size Chart – US, UK, EU &amp; Inches Conversion – Grivet Outdoors</div>
+                <div class="ai-source-item-snippet">The three systems use different reference points. US sizing is roughly equivalent to UK sizing minus 0.5 for…</div>
+                <div class="ai-source-item-meta">
+                  <div class="ai-source-item-fav" style="background:#2e7d32">G</div>
+                  <span class="ai-source-item-name">Grivet Outdoors</span>
+                </div>
+              </div>
+              <div class="ai-source-thumb">
+                <svg width="80" height="56" viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="80" height="56" fill="#e8f5e9"/>
+                  <ellipse cx="45" cy="32" rx="28" ry="14" fill="#4caf50" opacity="0.3"/>
+                  <path d="M18 35 Q30 20 50 28 Q62 33 68 30 L70 36 Q58 42 46 38 Q30 32 18 42 Z" fill="#795548" opacity="0.85"/>
+                  <ellipse cx="62" cy="30" rx="8" ry="5" fill="#5d4037" opacity="0.7"/>
+                  <rect x="14" y="36" width="8" height="10" rx="2" fill="#5d4037" opacity="0.8"/>
+                  <rect x="58" y="34" width="12" height="8" rx="3" fill="#4e342e" opacity="0.8"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="ai-show-all">Show all</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 1 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#000">A</div><div><div class="site-name">ASOS</div><div class="site-url">https://www.asos.com › customer-care › size-guides › mens-shoes</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Men's Shoe Size Guide – UK, EU &amp; US Conversions | ASOS</div>
+      <div class="snippet">Use ASOS's size guide to convert your shoe size between UK, EU and US. <b>EU 42 = UK 8 = US 8.5 (men's)</b>. Includes foot length measurements and tips for getting the best fit. <a>Read more</a></div>
+      <div class="sitelinks">
+        <div class="sitelink-item"><div class="sitelink-title">Men's Size Guide</div><div class="sitelink-snippet">UK, EU, US conversions + foot length chart</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Women's Size Guide</div><div class="sitelink-snippet">Full shoe size conversion table</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">Wide Fit Guide</div><div class="sitelink-snippet">Extra wide sizing and fit advice</div></div>
+        <div class="sitelink-item"><div class="sitelink-title">How to Measure Feet</div><div class="sitelink-snippet">Step-by-step guide to measuring at home</div></div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 2 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#c8a850">C</div><div><div class="site-name">Clarks</div><div class="site-url">https://www.clarks.co.uk › customer-service › size-guide</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Shoe Size Conversion Guide – UK, EU &amp; US | Clarks</div>
+      <div class="snippet">Clarks' full size conversion chart for men's, women's and kids' shoes. <b>EU 42 typically corresponds to UK size 8</b> in Clarks's sizing. Some styles may vary — measure your foot for the best result. <a>Read more</a></div>
+    </div>
+
+    <!-- PEOPLE ALSO ASK -->
+    <div class="paa-block">
+      <div class="paa-title">People also ask</div>
+      <div class="paa-item">What is EU size 42 in UK shoes? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Is EU 42 the same as UK 8? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">What is size 42 in US shoe size? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">How do I convert European shoe sizes to UK? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Is EU shoe sizing the same as UK? <span style="color:#9aa0a6">∨</span></div>
+    </div>
+
+    <!-- ORGANIC 3 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#2e7d32">G</div><div><div class="site-name">Grivet Outdoors</div><div class="site-url">https://grivetoutdoors.com › shoe-size-chart</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Shoe Size Chart – US, UK, EU &amp; Inches Conversion | Grivet Outdoors</div>
+      <div class="snippet">Complete shoe size conversion chart covering <b>US, UK, EU and foot length in inches and cm</b>. EU 42 = UK 8 = US Men's 8.5 = US Women's 10. Updated for 2026. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 4 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#795548">HP</div><div><div class="site-name">Hush Puppies UK</div><div class="site-url">https://www.hushpuppies.co.uk › size-guide › footwear</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">Footwear Size Chart | UK, EU &amp; US | Hush Puppies UK</div>
+      <div class="snippet">Our footwear size guide covers men's, women's and children's conversions. <b>EU 42 = UK 8 for men, EU 42 = UK 8.5 for women</b> in Hush Puppies sizing. Always check individual product pages. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 5 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#424242">W</div><div><div class="site-name">WikiHow</div><div class="site-url">https://www.wikihow.com › Convert-European-Shoe-Size-to-US</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">How to Convert European Shoe Sizes to US and UK | wikiHow</div>
+      <div class="snippet">To convert EU 42 to UK: <b>subtract 33.5 from the EU size</b> (42 − 33.5 = 8). This gives you the standard UK men's size. For women, subtract 31 to get the equivalent UK size. <a>Read more</a></div>
+    </div>
+
+    <!-- ORGANIC 6 -->
+    <div class="zone organic" id="25">
+      <div class="site-row"><div class="favicon" style="background:#ff4500">R</div><div><div class="site-name">Reddit</div><div class="site-url">https://www.reddit.com › r › Sneakers › eu42_uk_size</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title">EU 42 = UK 8 but it varies by brand – r/Sneakers</div>
+      <div class="snippet">"Nike runs half a size small so <b>EU 42 in Nike is more like UK 7.5</b>. Adidas is true to size. Always check the brand's own size chart." Top comment · 3.1k upvotes. <a>Read more</a></div>
+    </div>
+
+    <!-- RELATED -->
+    <div class="related-block">
+      <div class="related-title">Related searches</div>
+      <div class="related-grid">
+        <div class="related-item">🔍 eu 42 in uk shoe size women</div>
+        <div class="related-item">🔍 eu to uk shoe size conversion chart</div>
+        <div class="related-item">🔍 42 eu shoe size in us</div>
+        <div class="related-item">🔍 shoe size 42 in cm</div>
+        <div class="related-item">🔍 eu 43 in uk shoe size</div>
+        <div class="related-item">🔍 nike shoe size eu 42 uk</div>
+        <div class="related-item">🔍 eu 42 adidas uk size</div>
+        <div class="related-item">🔍 uk shoe size chart men</div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <div class="g-wordmark"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+      <div style="display:flex">
+        <div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div>
+        <div class="page-btn">4</div><div class="page-btn">5</div><div class="page-btn">6</div>
+        <div class="page-btn">7</div><div class="page-btn">8</div><div class="page-btn">9</div><div class="page-btn">10</div>
+      </div>
+      <div class="page-nav">Next ›</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="g-footer">
+  <span style="color:#9aa0a6;font-size:12px;width:100%;margin-bottom:4px">🌍 London, England — From your IP address</span>
+  <a href="#">Help</a><a href="#">Send feedback</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Settings</a>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-dot" id="toast-dot"></div>
+  <span id="toast-msg">–</span>
+</div>
+
+<script>
+var toastTimer;
+var firstClickDone = false; // lock: only the FIRST click copies to clipboard
+
+// ── Walk up the DOM to find the nearest zone id ───────────────────────
+function resolveZoneId(el) {
+  var ignored = ['toast','toast-dot','toast-msg'];
+  if (el.id && ignored.indexOf(el.id) === -1) return el.id;
+  var node = el.parentElement;
+  while (node && node !== document.body) {
+    if (node.id && ignored.indexOf(node.id) === -1) return node.id;
+    node = node.parentElement;
+  }
+  return null; // clicked outside a named zone (e.g. footer, tabs)
+}
+
+// ── Show toast ────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var dot = document.getElementById('toast-dot');
+  dot.className = 'toast-dot ' + (type || '');
+  document.getElementById('toast-msg').innerHTML = msg;
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
+
+// ── Global click listener ─────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  var zoneId = resolveZoneId(e.target);
+  if (!zoneId) return; // ignore clicks outside named zones
+
+  var type = zoneId === '15' ? 'ai'
+           : zoneId === '25' ? 'organic'
+           : 'other';
+
+  if (!firstClickDone) {
+    // ── FIRST CLICK: copy id to clipboard ──────────────────────────
+    firstClickDone = true;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(zoneId).then(function() {
+        showToast(
+          '✅ <strong>First click saved!</strong> &nbsp;Code copied: ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      }).catch(function() {
+        // Fallback for browsers that block clipboard without gesture
+        fallbackCopy(zoneId);
+        showToast(
+          '✅ <strong>First click saved:</strong> ' +
+          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+          type
+        );
+      });
+    } else {
+      fallbackCopy(zoneId);
+      showToast(
+        '✅ <strong>First click saved:</strong> ' +
+        '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
+        type
+      );
+    }
+
+    // Also notify Qualtrics parent if embedded in iframe
+    window.parent.postMessage({ clicked_result: zoneId }, '*');
+
+  } else {
+    // ── SUBSEQUENT CLICKS: visual feedback only, no clipboard ──────
+    showToast(
+      '🔒 Already recorded — first click was locked in. ' +
+      '<span style="opacity:0.6;font-size:11px">(' + zoneId + ' ignored)</span>',
+      ''
+    );
+  }
+});
+
+// ── Textarea fallback for clipboard ──────────────────────────────────
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── Named zone tracker (visual highlight on zone cards) ───────────────
+function track(zoneId, label, type, el) {
+  if (!firstClickDone) {
+    // highlight stays on first clicked zone only
+    document.querySelectorAll('.zone').forEach(function(z){ z.classList.remove('clicked'); });
+    el.classList.add('clicked');
+  }
+}
+</script>
+</body>
+</html>
