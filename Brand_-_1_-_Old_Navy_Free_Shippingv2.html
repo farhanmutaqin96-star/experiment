@@ -35,8 +35,8 @@
   .ai-sources { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
   .ai-source-pill { background: #3c4043; border-radius: 16px; padding: 3px 10px; font-size: 11px; color: #9aa0a6; }
   .ai-bullet-list { margin-top: 10px; }
-  .ai-bullet { display: flex; gap: 8px; font-size: 13px; color: #bdc1c6; line-height: 1.55; margin-bottom: 6px; }
-  .ai-bullet::before { content: "•"; color: #8ab4f8; flex-shrink: 0; }
+  .ai-bullet { display: block; font-size: 13px; color: #bdc1c6; line-height: 1.6; margin-bottom: 10px; padding-left: 14px; position: relative; }
+  .ai-bullet::before { content: "•"; color: #bdc1c6; position: absolute; left: 0; top: 0; }
   /* AI two-column layout */
   .ai-layout { display: flex; gap: 16px; align-items: flex-start; }
   .ai-main { flex: 1; min-width: 0; }
@@ -56,16 +56,16 @@
   .ai-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
   .ai-table th { font-size: 12px; color: #9aa0a6; font-weight: 500; text-align: left; padding: 6px 10px; border-bottom: 1px solid #3c4043; }
   .ai-table td { font-size: 12px; color: #bdc1c6; padding: 8px 10px; border-bottom: 1px solid #2a2b2d; vertical-align: top; }
-  .ai-table td:first-child { color: #8ab4f8; font-weight: 500; }
+  .ai-table td:first-child { color: #8ab4f8; font-weight: 500; text-decoration: underline; cursor: pointer; }
   .ai-divider { border: none; border-top: 1px solid #3c4043; margin: 12px 0; }
   /* Organic */
   .organic { padding: 10px 8px; margin-bottom: 4px; }
   .site-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
   .favicon { width: 16px; height: 16px; border-radius: 50%; background: #5f6368; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
-  .favicon.gap { background: #1a1a2e; color: #8ab4f8; }
+  .favicon.gap { background: transparent; padding: 0; overflow: hidden; border-radius: 4px; }
   .site-name { color: #bdc1c6; font-size: 13px; font-weight: 500; }
   .site-url { color: #9aa0a6; font-size: 12px; }
-  .result-title { color: #8ab4f8; font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
+  .result-title { color: #8ab4f8; font-size: 18px; line-height: 1.3; margin-bottom: 4px; cursor: pointer; }
   .snippet { color: #bdc1c6; font-size: 13px; line-height: 1.6; }
   .snippet b { color: #e8eaed; }
   .snippet a { color: #8ab4f8; text-decoration: none; }
@@ -101,13 +101,30 @@
   .toast-dot.sponsored { background: #f28b82; }
   .g-footer { border-top: 1px solid #3c4043; padding: 14px 16px; display: flex; gap: 20px; flex-wrap: wrap; }
   .g-footer a { color: #9aa0a6; font-size: 13px; text-decoration: none; }
+
+  /* ── Show more / Read more ── */
+  .ai-collapsible { position: relative; max-height: 210px; overflow: hidden; transition: max-height 0.35s ease; }
+  .ai-collapsible.expanded { max-height: 2000px; }
+  .ai-collapsible::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: linear-gradient(transparent, #2d2e30); pointer-events: none; transition: opacity 0.2s; }
+  .ai-collapsible.expanded::after { opacity: 0; pointer-events: none; }
+  .ai-show-more { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; color: #9aa0a6; font-size: 14px; cursor: pointer; padding: 12px 20px; border-radius: 24px; background: #3c4043; user-select: none; width: 100%; }
+  .ai-show-more:hover { background: #4a4d51; color: #e8eaed; }
+  .org-snippet-wrap { position: relative; }
+  .org-snippet-full { display: none; }
+  .org-snippet-full.visible { display: inline; }
+  .org-read-more { color: #8ab4f8; font-size: 13px; cursor: pointer; }
+  .org-read-more:hover { text-decoration: underline; }
+  .on-fav { display:inline-flex; align-items:center; width:16px; height:16px; flex-shrink:0; border-radius:50%; overflow:hidden; background:#fff; }
+  .on-fav svg { width:100%; height:100%; }
+  .on-fav-pill { display:inline-flex; align-items:center; width:14px; height:14px; flex-shrink:0; border-radius:50%; overflow:hidden; background:#fff; }
+  .ai-highlight { color: #8ab4f8; text-decoration: underline; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <header class="g-header">
   <div class="g-top">
-    <div class="g-logo"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+    <div class="g-logo"><span class="b1">G</a><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
     <div class="g-search">
       <span>old navy free shipping</span>
       <div class="g-search-icons"><span class="g-search-icon">✕</span><span class="g-search-icon">🎤</span><span class="g-search-icon">🔍</span></div>
@@ -125,19 +142,25 @@
     <div class="result-count">About 147,000,000 results (0.42 seconds)</div>
 
     <!-- AI OVERVIEW -->
-    <div class="zone ai-block" id="15">
+    <div class="ai-block">
       <div class="ai-head"><div class="ai-gem"></div><span class="ai-head-label">AI Overview</span><span style="margin-left:auto;color:#9aa0a6;font-size:18px;cursor:pointer">⋮</span></div>
       <div class="ai-layout">
         <div class="ai-main">
-          <div class="ai-body">Old Navy offers everyday free shipping on online orders of $50 or more. You can also get free shipping with no minimum spend by signing up for their Navyist Rewards membership or by using an Old Navy Rewards Credit Card. <span style="display:inline-flex;align-items:center;gap:4px;background:#3c4043;border-radius:12px;padding:2px 8px;font-size:11px;color:#9aa0a6;vertical-align:middle"><span style="background:#1a73e8;color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:2px">F</span> Forbes</span></div>
-          <div class="ai-section-title">Current Free Shipping Options</div>
+          <div class="ai-collapsible" id="ai-collapsible">
+          <div class="ai-body">Old Navy offers everyday <a href="javascript:void(0)" class="ai-highlight" data-track="15" style="color:#8ab4f8;text-decoration:underline;cursor:pointer">free shipping on online orders of $50 or more</a>. You can also get free shipping with no minimum spend by signing up for their Navyist Rewards membership or by using an Old Navy Rewards Credit Card. <span data-track="15" style="display:inline-flex;align-items:center;gap:4px;background:#3c4043;border-radius:12px;padding:2px 8px;font-size:11px;color:#9aa0a6;vertical-align:middle;cursor:pointer"><span class="on-fav-pill"><svg width="14" height="14" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg></span> oldnavy.com</span></div>
+          <div class="ai-body" style="margin-top:10px">A breakdown of Old Navy's shipping options includes:</div>
+          <div class="ai-bullet-list" style="margin-top:8px">
+            <div class="ai-bullet"><b>Standard Shipping:</b> Free on orders of $50 or more for all rewards members (otherwise a flat rate usually applies).</div>
+            <div class="ai-bullet"><b>Navyist &amp; Cardholder Perks:</b> Receive fast, free shipping on orders $50 and over as a Navyist Rewards member or Old Navy credit cardholder, with no minimum spend during promotional events.</div>
+          </div>
+          <div class="ai-section-title" style="margin-top:14px">Full Shipping Options Breakdown</div>
           <table class="ai-table">
             <thead><tr><th>Shipping Offer <span style="font-size:10px;opacity:0.5">🔗</span></th><th>Minimum Spend Required</th><th>Requirements / Details</th></tr></thead>
             <tbody>
-              <tr><td>Everyday Free Shipping</td><td>$50</td><td>Valid online at oldnavy.com on qualifying merchandise. Select free standard shipping at checkout.</td></tr>
-              <tr><td>Navyist Rewards Members</td><td>$0 (no minimum)</td><td>Free on all orders — join the Navyist Rewards programme for free to unlock this perk automatically.</td></tr>
-              <tr><td>Old Navy Credit Card</td><td>$0 (no minimum)</td><td>Cardholders get free shipping on every order, plus earn 5 points per $1 spent at Old Navy.</td></tr>
-              <tr><td>Promotional Offers</td><td>Varies</td><td>Old Navy regularly runs site-wide free shipping events — check the homepage or sign up for emails.</td></tr>
+              <tr><td data-track="15">Everyday Free Shipping</td><td>$50</td><td>Valid online at oldnavy.com on qualifying merchandise. Select free standard shipping at checkout.</td></tr>
+              <tr><td data-track="15">Navyist Rewards Members</td><td>$0 (no minimum)</td><td>Free on all orders — join the Navyist Rewards programme for free to unlock this perk automatically.</td></tr>
+              <tr><td data-track="15">Old Navy Credit Card</td><td>$0 (no minimum)</td><td>Cardholders get free shipping on every order, plus earn 5 points per $1 spent at Old Navy.</td></tr>
+              <tr><td data-track="15">Promotional Offers</td><td>Varies</td><td>Old Navy regularly runs site-wide free shipping events — check the homepage or sign up for emails.</td></tr>
             </tbody>
           </table>
           <div class="ai-bullet-list">
@@ -145,22 +168,24 @@
             <div class="ai-bullet">Expedited shipping (2-day or overnight) is available at extra charge regardless of membership status.</div>
             <div class="ai-bullet">Free shipping thresholds apply after discounts and before taxes on your order total.</div>
           </div>
-          <div class="ai-sources" style="margin-top:10px"><span class="ai-source-pill">🌐 Old Navy Canada +2</span><span class="ai-source-pill">🌐 oldnavy.gap.com</span><span class="ai-source-pill">🌐 Forbes</span></div>
+          <div class="ai-sources" style="margin-top:10px"><span class="ai-source-pill" data-track="15" style="display:inline-flex;cursor:pointer;align-items:center;gap:5px"><svg width="14" height="14" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg> Old Navy Canada +2</span><span class="ai-source-pill" data-track="15" style="display:inline-flex;cursor:pointer;align-items:center;gap:5px"><svg width="14" height="14" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg> oldnavy.gap.com</span><span class="ai-source-pill" data-track="15" style="display:inline-flex;cursor:pointer;align-items:center;gap:5px"><svg width="14" height="14" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg> oldnavy.com</span></div>
+          </div>
+          <div class="ai-show-more" data-no-track="true" id="ai-show-more" onclick="toggleAIMore(event)">Show more <span id="ai-chevron">∨</span></div>
         </div>
         <div class="ai-sidebar">
-          <div class="ai-cite-card">
+          <div class="ai-cite-card" data-track="15">
             <span class="ai-cite-dots">⋮</span>
-            <div class="ai-cite-title">Every Day Free Shipping - Old Navy</div>
-            <div class="ai-cite-snippet">FREE RETURNS… Everyday Free Shipping is valid online only at bananarepublic.ca, oldnavy.ca and gapcanada.ca on purchases of…</div>
-            <div class="ai-cite-source"><div class="ai-cite-fav" style="background:#34a853">O</div><span class="ai-cite-name">Old Navy Canada</span></div>
+            <div class="ai-cite-title">Everyday Free Shipping | Old Navy - Gap</div>
+            <div class="ai-cite-snippet">Rewards Members, shipping is on us! Free shipping on Rewards Members' orders of $50 or more. Qualifying items ship free…</div>
+            <div class="ai-cite-source"><div class="on-fav-pill" style="width:14px;height:14px;flex-shrink:0;border-radius:50%;overflow:hidden;background:#fff"><svg width="14" height="14" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg></div><span class="ai-cite-name">oldnavy.gap.com</span></div>
           </div>
-          <div class="ai-cite-card">
+          <div class="ai-cite-card" data-track="15">
             <span class="ai-cite-dots">⋮</span>
             <div class="ai-cite-card-inner">
               <div class="ai-cite-content">
-                <div class="ai-cite-title">30% Off - Old Navy Promo Codes March 2026 - Forbes Vetted</div>
-                <div class="ai-cite-snippet">5 Feb 2026 — If you routinely shop the site, it might be worth opening an Old Navy Rewards Credit Card. On…</div>
-                <div class="ai-cite-source"><div class="ai-cite-fav" style="background:#1a73e8">F</div><span class="ai-cite-name">Forbes</span></div>
+                <div class="ai-cite-title">Free Shipping on Orders $25+ - Old Navy - Gap</div>
+                <div class="ai-cite-snippet">SHIPPING IS ON US! FREE on orders of $25 or more. Select the FREE (5-7 business days) option at checkout. Offer valid online…</div>
+                <div class="ai-cite-source"><div class="on-fav-pill" style="width:14px;height:14px;flex-shrink:0;border-radius:50%;overflow:hidden;background:#fff"><svg width="14" height="14" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg></div><span class="ai-cite-name">oldnavy.gap.com</span></div>
               </div>
               <div class="ai-cite-thumb">
                 <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" fill="#cc0000"/><ellipse cx="22" cy="22" rx="10" ry="13" fill="#e8c49a"/><rect x="12" y="33" width="20" height="16" rx="1" fill="#222"/><rect x="30" y="16" width="14" height="2" rx="1" fill="#666"/><rect x="30" y="21" width="12" height="2" rx="1" fill="#666"/><rect x="30" y="26" width="13" height="2" rx="1" fill="#666"/></svg>
@@ -172,23 +197,23 @@
     </div>
 
     <!-- ORGANIC 1 -->
-    <div class="zone organic" id="25" >
-      <div class="site-row"><div class="favicon gap">G</div><div><div class="site-name">Old Navy</div><div class="site-url">https://oldnavy.gap.com › customerService › info</div></div><span class="three-dot">⋮</span></div>
-      <div class="result-title">Everyday Free Shipping | Old Navy - Gap</div>
-      <div class="snippet">Rewards Members, shipping is on us! <b>Free shipping on all Rewards Members' orders of $50 or more*</b>; Qualifying items ship free. <a>Read more</a></div>
+    <div class="organic">
+      <div class="site-row"><div class="on-fav"><svg width="16" height="16" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg></div><div><div class="site-name">Old Navy</div><div class="site-url">https://oldnavy.gap.com › customerService › info</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25">Everyday Free Shipping | Old Navy - Gap</div>
+      <div class="snippet">Rewards Members, shipping is on us! Free shipping on all Rewards Members' orders of $50 or more* </div>
       <div class="sitelinks">
-        <div class="sitelink-item"><div class="sitelink-title">Navyist Rewards</div><div class="sitelink-snippet">Free shipping on every order $0+</div></div>
-        <div class="sitelink-item"><div class="sitelink-title">Shipping &amp; Returns</div><div class="sitelink-snippet">Standard, express &amp; overnight</div></div>
-        <div class="sitelink-item"><div class="sitelink-title">Old Navy Credit Card</div><div class="sitelink-snippet">Free shipping + 5 points per $1</div></div>
-        <div class="sitelink-item"><div class="sitelink-title">Current Promotions</div><div class="sitelink-snippet">See all active shipping offers</div></div>
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">Navyist Rewards</div><div class="sitelink-snippet">Free shipping on every order $0+</div></div>
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">Shipping &amp; Returns</div><div class="sitelink-snippet">Standard, express &amp; overnight</div></div>
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">Old Navy Credit Card</div><div class="sitelink-snippet">Free shipping + 5 points per $1</div></div>
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">Current Promotions</div><div class="sitelink-snippet">See all active shipping offers</div></div>
       </div>
     </div>
 
     <!-- ORGANIC 2 -->
-    <div class="zone organic" id="25" >
-      <div class="site-row"><div class="favicon gap">G</div><div><div class="site-name">Old Navy</div><div class="site-url">https://oldnavy.gap.com › edfsLegal-ON-Narvar-122419</div></div><span class="three-dot">⋮</span></div>
-      <div class="result-title">Free Shipping on all orders over $25 - Old Navy - Gap</div>
-      <div class="snippet">SHIPPING IS ON US! · <b>FREE on orders of $25 or more.</b> Select the FREE (5-7 business days) option · $7 flat rate for orders under $25. <a>Read more</a></div>
+    <div class="organic">
+      <div class="site-row"><div class="on-fav"><svg width="16" height="16" viewBox="-5 -2 96 32" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="14" r="20" fill="#fff"/><ellipse cx="43.324" cy="14.07" rx="43.325" ry="14.071" fill="#fff"/><path fill="#003874" d="M52.831 15.355h2.288l-1.156-4.3-1.132 4.3zM31.256 10.962h-.581v6.252h.574a1.753 1.753 0 0 0 1.711-.773 5.234 5.234 0 0 0 0-4.72 1.738 1.738 0 0 0-1.704-.759zM15.211 10.764c-1.616 0-1.9 2.242-1.9 3.357s.493 3.222 1.9 3.223 1.905-2.12 1.906-3.222-.29-3.356-1.906-3.358z"/><path fill="#003764" d="M43.323 0C19.397 0 0 6.3 0 14.069s19.4 14.072 43.323 14.072 43.326-6.3 43.326-14.072S67.247 0 43.323 0zM15.205 19.334c-2.677 0-4.35-2.212-4.356-5.214v-.023c0-3.164 1.664-5.29 4.364-5.289s4.359 2.132 4.357 5.3c-.007 3.006-1.681 5.226-4.366 5.226zm11.7-.134h-6.04V8.986h2.336v8.227h3.705zm9.13-5.115v.066a5.923 5.923 0 0 1-1.291 3.925c-.956 1.1-1.98 1.125-3.262 1.124h-3.267V8.986h3.274c1.282 0 2.306.005 3.261 1.1a5.938 5.938 0 0 1 1.286 3.947zM48.121 19.2h-2.346l-3.248-5.844v5.842h-2.352V8.986h2.35l3.256 5.921V8.986h2.344zm8.029 0l-.534-1.987h-3.278l-.523 1.987H49.43l2.745-10.214h3.566L58.49 19.2zm7.525 0h-3.111L57.941 8.986h2.592l1.589 7.122 1.6-7.122h2.589zm9.066-3.257V19.2h-2.607v-3.258l-3.051-6.956h2.573l1.783 4.465 1.79-4.465h2.572z"/></svg></div><div><div class="site-name">Old Navy</div><div class="site-url">https://oldnavy.gap.com › edfsLegal-ON-Narvar-122419</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25">Free Shipping on all orders over $25 - Old Navy - Gap</div>
+      <div class="snippet">SHIPPING IS ON US! · FREE on orders of $25 or more. Select the FREE (5-7 business days) option · $7 flat rate for orders under $25.</div>
     </div>
 
     <!-- PEOPLE ALSO ASK -->
@@ -202,31 +227,31 @@
     </div>
 
     <!-- ORGANIC 3 -->
-    <div class="zone organic" id="25" >
+    <div class="organic">
       <div class="site-row"><div class="favicon" style="background:#e91e63">R</div><div><div class="site-name">RetailMeNot</div><div class="site-url">https://www.retailmenot.com › old-navy-free-shipping</div></div><span class="three-dot">⋮</span></div>
-      <div class="result-title">Old Navy Free Shipping: Every Way to Get It in 2026</div>
-      <div class="snippet">The easiest way to get Old Navy free shipping is to <b>spend $50 or more</b>. You can also unlock <b>unlimited free shipping</b> as a Navyist Rewards member at no cost. <a>Read more</a></div>
+      <div class="result-title" data-track="25">Old Navy Free Shipping: Every Way to Get It in 2026</div>
+      <div class="snippet">The easiest way to get Old Navy free shipping is to spend $50 or more. </div>
     </div>
 
     <!-- ORGANIC 4 -->
-    <div class="zone organic" id="25" >
+    <div class="organic">
       <div class="site-row"><div class="favicon" style="background:#ff6f00">H</div><div><div class="site-name">Honey</div><div class="site-url">https://www.joinhoney.com › coupons › old-navy</div></div><span class="three-dot">⋮</span></div>
-      <div class="result-title">Old Navy Promo Codes &amp; Coupons — May 2026</div>
-      <div class="snippet">30 Old Navy promo codes for May 2026. Top coupon: <b>Free Shipping on orders $25+</b>. Members get an extra 20% off. Verified 2 hours ago. <a>Read more</a></div>
+      <div class="result-title" data-track="25">Old Navy Promo Codes &amp; Coupons — May 2026</div>
+      <div class="snippet">30 Old Navy promo codes for May 2026. Top coupon: Free Shipping on orders $25+. </div>
     </div>
 
     <!-- ORGANIC 5 -->
-    <div class="zone organic" id="25" >
+    <div class="organic">
       <div class="site-row"><div class="favicon" style="background:#1565c0">S</div><div><div class="site-name">Slickdeals</div><div class="site-url">https://slickdeals.net › coupons › old-navy</div></div><span class="three-dot">⋮</span></div>
-      <div class="result-title">Old Navy Coupons: 40% Off — May 2026 | Slickdeals</div>
-      <div class="snippet">Today's top deal: <b>Free standard shipping on all orders</b> — no minimum required this weekend only. Community-verified. <a>Read more</a></div>
+      <div class="result-title" data-track="25">Old Navy Coupons: 40% Off — May 2026 | Slickdeals</div>
+      <div class="snippet">Today's top deal: Free standard shipping on all orders — no minimum required this weekend only. </div>
     </div>
 
     <!-- ORGANIC 6 -->
-    <div class="zone organic" id="25" >
+    <div class="organic">
       <div class="site-row"><div class="favicon" style="background:#b92b27">Q</div><div><div class="site-name">Quora</div><div class="site-url">https://www.quora.com › Does-Old-Navy-offer-free-shipping</div></div><span class="three-dot">⋮</span></div>
-      <div class="result-title">Does Old Navy offer free shipping? - Quora</div>
-      <div class="snippet">Yes — Old Navy offers free standard shipping on orders over $50. Navyist Rewards members get <b>free shipping on all orders</b>, no minimum. <a>Read more</a></div>
+      <div class="result-title" data-track="25">Does Old Navy offer free shipping? - Quora</div>
+      <div class="snippet">Yes — Old Navy offers free standard shipping on orders over $50. Navyist Rewards members get free shipping on all orders, no minimum. </div>
     </div>
 
     <!-- RELATED -->
@@ -270,21 +295,30 @@
 
 <script>
 var toastTimer;
-var firstClickDone = false; // lock: only the FIRST click copies to clipboard
+var resultLocked  = false; // locks after AI or organic click
+var showMoreDone  = false; // tracks if show more was clicked
 
-// ── Walk up the DOM to find the nearest zone id ───────────────────────
-function resolveZoneId(el) {
-  var ignored = ['toast','toast-dot','toast-msg'];
-  if (el.id && ignored.indexOf(el.id) === -1) return el.id;
-  var node = el.parentElement;
-  while (node && node !== document.body) {
-    if (node.id && ignored.indexOf(node.id) === -1) return node.id;
-    node = node.parentElement;
+// ── Clipboard ─────────────────────────────────────────────────────────
+function copyCode(code) {
+  var text = String(code);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(function(){ fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
   }
-  return null; // clicked outside a named zone (e.g. footer, tabs)
+  window.parent.postMessage({ clicked_result: text }, '*');
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
 }
 
-// ── Show toast ────────────────────────────────────────────────────────
+// ── Toast ─────────────────────────────────────────────────────────────
 function showToast(msg, type) {
   var dot = document.getElementById('toast-dot');
   dot.className = 'toast-dot ' + (type || '');
@@ -292,80 +326,75 @@ function showToast(msg, type) {
   var t = document.getElementById('toast');
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 3500);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 4000);
+}
+
+// ── Show more toggle — copies 35, does NOT lock ───────────────────────
+function toggleAIMore(e) {
+  if (e) e.stopPropagation();
+  document.getElementById('ai-collapsible').classList.add('expanded');
+  document.getElementById('ai-show-more').style.display = 'none';
+  if (!resultLocked) {
+    showMoreDone = true;
+    copyCode(35);
+    // No toast for show more — silent copy
+  }
+}
+// ── Read more toggle (organic snippets) — no tracking ────────────────
+function toggleOrg(spanId, btnId) {
+  var span = document.getElementById(spanId);
+  var btn  = document.getElementById(btnId);
+  var open = span.classList.toggle('visible');
+  btn.textContent = open ? 'Show less' : 'Read more';
+}
+
+// ── Resolve zone ID ───────────────────────────────────────────────────
+function resolveZoneId(el) {
+  // Only fire on elements with data-track attribute (or their children)
+  var node = el;
+  while (node && node !== document.body) {
+    if (node.dataset && node.dataset.track) return node.dataset.track;
+    node = node.parentElement;
+  }
+  return null;
 }
 
 // ── Global click listener ─────────────────────────────────────────────
 document.addEventListener('click', function(e) {
-  var zoneId = resolveZoneId(e.target);
-  if (!zoneId) return; // ignore clicks outside named zones
+  // Skip no-track buttons (show more / read more)
+  if (e.target.closest('[data-no-track]')) return;
 
-  var type = zoneId === '15' ? 'ai'
-           : zoneId === '25' ? 'organic'
-           : 'other';
-
-  if (!firstClickDone) {
-    // ── FIRST CLICK: copy id to clipboard ──────────────────────────
-    firstClickDone = true;
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(zoneId).then(function() {
-        showToast(
-          '✅ <strong>First click saved!</strong> &nbsp;Code copied: ' +
-          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
-          type
-        );
-      }).catch(function() {
-        // Fallback for browsers that block clipboard without gesture
-        fallbackCopy(zoneId);
-        showToast(
-          '✅ <strong>First click saved:</strong> ' +
-          '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
-          type
-        );
-      });
-    } else {
-      fallbackCopy(zoneId);
-      showToast(
-        '✅ <strong>First click saved:</strong> ' +
-        '<code style="font-size:11px;background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px">' + zoneId + '</code>',
-        type
-      );
-    }
-
-    // Also notify Qualtrics parent if embedded in iframe
-    window.parent.postMessage({ clicked_result: zoneId }, '*');
-
-  } else {
-    // ── SUBSEQUENT CLICKS: visual feedback only, no clipboard ──────
-    showToast(
-      '🔒 Already recorded — first click was locked in. ' +
-      '<span style="opacity:0.6;font-size:11px">(' + zoneId + ' ignored)</span>',
-      ''
-    );
+  // Once AI or organic is clicked, nothing else registers
+  if (resultLocked) {
+    showToast('🔒 Already recorded — cannot change.', '');
+    return;
   }
+
+  var zoneId = resolveZoneId(e.target);
+  if (!zoneId) return;
+
+  var code  = zoneId === '15' ? 15 : 25;
+  var label = code === 15 ? 'AI Overview' : 'Organic result';
+  var type  = code === 15 ? 'ai' : 'organic';
+
+  resultLocked = true; // lock — no further changes
+
+  // Highlight clicked zone
+  // highlight clicked element
+  document.querySelectorAll('.result-title, .ai-cite-card, .ai-link').forEach(function(z){ z.style.opacity='1'; });
+  e.target.closest('[data-track]') && (e.target.closest('[data-track]').style.opacity = '0.7');
+
+  copyCode(code);
+
+  showToast(
+    '✅ <strong>' + label + '</strong> — code: ' +
+    '<code style="background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px;font-size:11px">' + code + '</code> 🔒 locked',
+    type
+  );
 });
 
-// ── Textarea fallback for clipboard ──────────────────────────────────
-function fallbackCopy(text) {
-  var ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
-  document.body.appendChild(ta);
-  ta.focus();
-  ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(ta);
-}
-
-// ── Named zone tracker (visual highlight on zone cards) ───────────────
-function track(zoneId, label, type, el) {
-  if (!firstClickDone) {
-    // highlight stays on first clicked zone only
-    document.querySelectorAll('.zone').forEach(function(z){ z.classList.remove('clicked'); });
-    el.classList.add('clicked');
-  }
-}
+// Code 0 is handled by Qualtrics default embedded data value
+// (set to '0' in addOnload before any interaction)
 </script>
 </body>
 </html>
