@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Search — nordstrom birthday reward</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #202124; font-family: Arial, sans-serif; color: #e8eaed; font-size: 14px; }
+  .g-header { position: sticky; top: 0; z-index: 100; background: #202124; border-bottom: 1px solid #3c4043; padding: 8px 16px 0; }
+  .g-top { display: flex; align-items: center; gap: 14px; padding-bottom: 8px; }
+  .g-logo { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; white-space: nowrap; }
+  .g-logo .b1{color:#4285f4}.g-logo .b2{color:#ea4335}.g-logo .b3{color:#fbbc04}.g-logo .b4{color:#4285f4}.g-logo .b5{color:#34a853}.g-logo .b6{color:#ea4335}
+  .g-search { display: flex; align-items: center; flex: 1; background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 7px 16px; gap: 8px; max-width: 580px; }
+  .g-search span { color: #e8eaed; font-size: 14px; flex: 1; }
+  .g-search-icons { display: flex; gap: 10px; }
+  .g-search-icon { color: #9aa0a6; font-size: 16px; cursor: pointer; }
+  .g-tabs { display: flex; gap: 2px; }
+  .g-tab { color: #9aa0a6; font-size: 13px; padding: 8px 12px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .g-tab.active { color: #8ab4f8; border-bottom-color: #8ab4f8; }
+  .g-tab:hover:not(.active) { color: #e8eaed; background: rgba(255,255,255,0.05); border-radius: 4px 4px 0 0; }
+  .g-body { display: flex; max-width: 1100px; padding: 14px 16px 40px; }
+  .g-left { flex: 1; min-width: 0; max-width: 750px; }
+  .result-count { color: #9aa0a6; font-size: 13px; margin-bottom: 14px; }
+  .zone { cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.15s, background 0.15s; }
+  .zone:hover { border-color: rgba(138,180,248,0.3); background: rgba(255,255,255,0.03); }
+  .zone.clicked { border-color: #8ab4f8; }
+  /* AI */
+  .ai-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .ai-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .ai-gem { width: 18px; height: 18px; border-radius: 4px; background: conic-gradient(#4285f4 0deg, #9b59b6 90deg, #ea4335 180deg, #fbbc04 270deg, #4285f4 360deg); flex-shrink: 0; }
+  .ai-head-label { font-size: 15px; font-weight: 500; color: #e8eaed; }
+  .ai-body { font-size: 13px; color: #bdc1c6; line-height: 1.6; }
+  .ai-sources { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .ai-source-pill { background: #3c4043; border-radius: 16px; padding: 3px 10px; font-size: 11px; color: #9aa0a6; }
+  .ai-bullet-list { margin-top: 10px; }
+  .ai-bullet { display: block; font-size: 13px; color: #bdc1c6; line-height: 1.6; margin-bottom: 10px; padding-left: 14px; position: relative; }
+  .ai-bullet::before { content: "•"; color: #bdc1c6; position: absolute; left: 0; top: 0; }
+  /* AI two-column layout */
+  .ai-layout { display: flex; gap: 16px; align-items: flex-start; }
+  .ai-main { flex: 1; min-width: 0; }
+  .ai-sidebar { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .ai-cite-card { background: #3c4043; border-radius: 8px; padding: 10px 12px; position: relative; }
+  .ai-cite-card-inner { display: flex; gap: 8px; align-items: flex-start; }
+  .ai-cite-thumb { width: 56px; height: 56px; border-radius: 6px; flex-shrink: 0; overflow: hidden; }
+  .ai-cite-content { flex: 1; min-width: 0; }
+  .ai-cite-title { font-size: 12px; font-weight: 500; color: #e8eaed; line-height: 1.4; margin-bottom: 4px; }
+  .ai-cite-snippet { font-size: 11px; color: #9aa0a6; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ai-cite-source { display: flex; align-items: center; gap: 5px; }
+  .ai-cite-fav { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ai-cite-name { font-size: 11px; color: #9aa0a6; }
+  .ai-cite-dots { position: absolute; top: 8px; right: 8px; color: #9aa0a6; font-size: 14px; cursor: pointer; }
+  /* AI table */
+  .ai-section-title { font-size: 15px; font-weight: 600; color: #e8eaed; margin: 14px 0 8px; }
+  .ai-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .ai-table th { font-size: 12px; color: #9aa0a6; font-weight: 500; text-align: left; padding: 6px 10px; border-bottom: 1px solid #3c4043; }
+  .ai-table td { font-size: 12px; color: #bdc1c6; padding: 8px 10px; border-bottom: 1px solid #2a2b2d; vertical-align: top; }
+  .ai-table td:first-child { color: #8ab4f8; font-weight: 500; }
+  .ai-divider { border: none; border-top: 1px solid #3c4043; margin: 12px 0; }
+  /* Organic */
+  .organic { padding: 10px 8px; margin-bottom: 4px; }
+  .site-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .favicon { width: 16px; height: 16px; border-radius: 50%; background: #5f6368; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+  .favicon.gap { background: transparent; padding: 0; overflow: hidden; border-radius: 4px; }
+  .site-name { color: #bdc1c6; font-size: 13px; font-weight: 500; }
+  .site-url { color: #9aa0a6; font-size: 12px; }
+  .result-title { color: #8ab4f8; font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
+  .snippet { color: #bdc1c6; font-size: 13px; line-height: 1.6; }
+  .snippet b { color: #e8eaed; }
+  .snippet a { color: #8ab4f8; text-decoration: none; }
+  .three-dot { color: #9aa0a6; font-size: 14px; float: right; cursor: pointer; padding: 2px 6px; }
+  .sitelinks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 8px; }
+  .sitelink-item { border-left: 3px solid #3c4043; padding-left: 8px; }
+  .sitelink-title { color: #8ab4f8; font-size: 13px; }
+  .sitelink-snippet { color: #9aa0a6; font-size: 12px; line-height: 1.4; }
+  /* PAA */
+  .paa-block { background: #2d2e30; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .paa-title { font-size: 15px; font-weight: 500; color: #e8eaed; padding: 14px 16px 10px; }
+  .paa-item { border-top: 1px solid #3c4043; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; font-size: 14px; color: #bdc1c6; }
+  .paa-item:hover { background: rgba(255,255,255,0.04); }
+  /* Related */
+  .related-block { background: #2d2e30; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .related-title { font-size: 15px; font-weight: 500; color: #e8eaed; margin-bottom: 10px; }
+  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .related-item { background: #3c4043; border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #bdc1c6; cursor: pointer; }
+  .related-item:hover { background: #444; }
+  /* Pagination */
+  .pagination { display: flex; align-items: center; justify-content: center; margin: 28px 0 20px; }
+  .g-wordmark { font-size: 22px; font-weight: 500; margin-right: 24px; }
+  .page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px; cursor: pointer; color: #8ab4f8; }
+  .page-btn:hover { background: rgba(138,180,248,0.1); }
+  .page-btn.active { background: #8ab4f8; color: #202124; font-weight: 500; }
+  .page-nav { padding: 6px 10px; color: #8ab4f8; font-size: 14px; cursor: pointer; }
+  /* Toast */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #303134; border: 1px solid #5f6368; border-radius: 24px; padding: 10px 20px; font-size: 13px; color: #e8eaed; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 200; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .toast-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .toast-dot.ai { background: #8ab4f8; }
+  .toast-dot.organic { background: #81c995; }
+  .toast-dot.sponsored { background: #f28b82; }
+  .g-footer { border-top: 1px solid #3c4043; padding: 14px 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .g-footer a { color: #9aa0a6; font-size: 13px; text-decoration: none; }
+
+  /* ── Show more / Read more ── */
+  .ai-collapsible { position: relative; max-height: 210px; overflow: hidden; transition: max-height 0.35s ease; }
+  .ai-collapsible.expanded { max-height: 2000px; }
+  .ai-collapsible::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: linear-gradient(transparent, #2d2e30); pointer-events: none; transition: opacity 0.2s; }
+  .ai-collapsible.expanded::after { opacity: 0; pointer-events: none; }
+  .ai-show-more { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; color: #9aa0a6; font-size: 14px; cursor: pointer; padding: 12px 20px; border-radius: 24px; background: #3c4043; user-select: none; width: 100%; }
+  .ai-show-more:hover { background: #4a4d51; color: #e8eaed; }
+  .org-snippet-wrap { position: relative; }
+  .org-snippet-full { display: none; }
+  .org-snippet-full.visible { display: inline; }
+  .org-read-more { color: #8ab4f8; font-size: 13px; cursor: pointer; }
+  .org-read-more:hover { text-decoration: underline; }
+  .n-fav { display:inline-flex; align-items:center; width:16px; height:16px; flex-shrink:0; border-radius:50%; overflow:hidden; background:#fff; }
+  .n-fav svg { width:100%; height:100%; }
+  .n-pill { display:inline-flex; align-items:center; width:14px; height:14px; flex-shrink:0; border-radius:50%; overflow:hidden; background:#fff; }
+</style>
+</head>
+<body>
+
+<header class="g-header">
+  <div class="g-top">
+    <div class="g-logo"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+    <div class="g-search">
+      <span>nordstrom birthday reward</span>
+      <div class="g-search-icons"><span class="g-search-icon">✕</span><span class="g-search-icon">🎤</span><span class="g-search-icon">🔍</span></div>
+    </div>
+  </div>
+  <div class="g-tabs">
+    <div class="g-tab">AI Mode</div><div class="g-tab active">All</div><div class="g-tab">Shopping</div>
+    <div class="g-tab">Images</div><div class="g-tab">Short videos</div><div class="g-tab">Videos</div>
+    <div class="g-tab">News</div><div class="g-tab">More ∨</div><div class="g-tab">Tools ∨</div>
+  </div>
+</header>
+
+<div class="g-body">
+  <div class="g-left">
+    <div class="result-count">About 38,400,000 results (0.41 seconds)</div>
+
+    <!-- AI OVERVIEW -->
+    <div class="ai-block">
+      <div class="ai-head"><div class="ai-gem"></div><span class="ai-head-label">AI Overview</span><span style="margin-left:auto;color:#9aa0a6;font-size:18px;cursor:pointer">⋮</span></div>
+      <div class="ai-layout">
+        <div class="ai-main">
+          <div class="ai-collapsible" id="ai-collapsible">
+          <div class="ai-body">Nordstrom offers birthday perks through its loyalty program, <b>The Nordy Club</b>. Members receive <span class="ai-highlight">surprise birthday offers, which usually include a <a href="javascript:void(0)" data-track="15" style="color:#8ab4f8;text-decoration:underline;cursor:pointer">voucher to spend or bonus reward points</a></span>. To secure these benefits, you must update your date of birth in your Nordstrom Account Profile at least 30 days before your birthday month.
+            <span data-track="15" style="display:inline-flex;align-items:center;gap:4px;background:#3c4043;border-radius:12px;padding:2px 8px;font-size:11px;color:#9aa0a6;vertical-align:middle;cursor:pointer"><svg width='12' height='12' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg> Nordstrom +3</span>
+          </div>
+          <div class="ai-body" style="margin-top:10px">The specific birthday reward depends on your Nordy Club tier and whether you shop at Nordstrom or Nordstrom Rack:</div>
+          <div class="ai-bullet-list" style="margin-top:8px">
+            <div class="ai-bullet"><b>Standard Members:</b> Receive a "Personal Double Points Day" to use on a date of your choosing during your birthday month, plus access to beauty perks (such as exclusive bonus points on beauty purchases).</div>
+            <div class="ai-bullet"><b>Cardmembers:</b> If you carry a Nordstrom credit or debit card, you may receive a special birthday bonus — often in the form of a $10–$20 <a href="javascript:void(0)" data-track="15" style="color:#8ab4f8;text-decoration:underline;cursor:pointer">"Nordstrom Note"</a> (a spending voucher) or bonus points deposited into your account.</div>
+            <div class="ai-bullet"><b>Nordstrom Rack App:</b> If you use the <a href="javascript:void(0)" data-track="15" style="color:#8ab4f8;text-decoration:underline;cursor:pointer">Nordstrom Rack App</a>, you will frequently find a surprise digital birthday perk waiting in the app during your special month.
+              <span data-track="15" style="display:inline-flex;align-items:center;gap:4px;background:#3c4043;border-radius:12px;padding:2px 8px;font-size:11px;color:#9aa0a6;vertical-align:middle;cursor:pointer"><svg width='12' height='12' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg> Nordstrom Rack +4</span>
+            </div>
+          </div>
+          <div class="ai-section-title" style="margin-top:14px">Key Rules to Know</div>
+          <div class="ai-bullet-list" style="margin-top:8px">
+            <div class="ai-bullet"><b>30-Day Rule:</b> Your birthday must be saved in your account profile at least 30 days prior to the start of your birthday month to qualify.</div>
+            <div class="ai-bullet"><b>Expiration:</b> Birthday reward Notes and points come with an expiration date — check the exact date in the email or your account dashboard when it is issued.</div>
+            <div class="ai-bullet"><b>Where to Shop:</b> Standard Nordstrom Notes can be used at Nordstrom, Nordstrom.com, Nordstrom Rack, and Nordstrom Local locations.
+              <span data-track="15" style="display:inline-flex;align-items:center;gap:4px;background:#3c4043;border-radius:12px;padding:2px 8px;font-size:11px;color:#9aa0a6;vertical-align:middle;cursor:pointer"><svg width='12' height='12' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg> Nordstrom +2</span>
+            </div>
+          </div>
+          <div class="ai-sources" style="margin-top:10px">
+            <span class="ai-source-pill" data-track="15" style="display:inline-flex;cursor:pointer;align-items:center;gap:5px"><svg width='12' height='12' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg> nordstrom.com</span>
+            <span class="ai-source-pill" data-track="15" style="display:inline-flex;cursor:pointer;align-items:center;gap:5px"><svg width='12' height='12' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg> nordstromrack.com</span>
+          </div></div>
+          <div class="ai-show-more" data-no-track="true" id="ai-show-more" onclick="toggleAIMore(event)">Show more <span id="ai-chevron">∨</span></div>
+        </div>
+        <div class="ai-sidebar">
+          <div class="ai-cite-card" data-track="15">
+            <span class="ai-cite-dots">⋮</span>
+            <div class="ai-cite-title">Birthday Perks | The Nordy Club | Nordstrom</div>
+            <div class="ai-cite-snippet">Celebrate your birthday with exclusive perks. Receive a Personal Double Points Day and beauty bonuses during your birthday month…fying items ship free…</div>
+            <div class="ai-cite-source"><div class="n-pill" style="width:14px;height:14px;overflow:hidden;border-radius:2px"><svg width='14' height='14' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg></div><span class="ai-cite-name">nordstrom.com</span></div>
+          </div>
+          <div class="ai-cite-card" data-track="15">
+            <span class="ai-cite-dots">⋮</span>
+            <div class="ai-cite-card-inner">
+              <div class="ai-cite-content">
+                <div class="ai-cite-title">The Nordy Club | Nordstrom Rack – Birthday Benefits</div>
+                <div class="ai-cite-snippet">Download the Nordstrom Rack App to find a surprise digital birthday perk during your special month. Extra 5% Off for Cardmembers…</div>
+                <div class="ai-cite-source"><div class="n-pill" style="width:14px;height:14px;overflow:hidden;border-radius:2px"><svg width='14' height='14' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg></div><span class="ai-cite-name">nordstromrack.com</span></div>
+              </div>
+              <div class="ai-cite-thumb">
+                <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" fill="#cc0000"/><ellipse cx="22" cy="22" rx="10" ry="13" fill="#e8c49a"/><rect x="12" y="33" width="20" height="16" rx="1" fill="#222"/><rect x="30" y="16" width="14" height="2" rx="1" fill="#666"/><rect x="30" y="21" width="12" height="2" rx="1" fill="#666"/><rect x="30" y="26" width="13" height="2" rx="1" fill="#666"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 1 -->
+    <div class="organic">
+      <div class="site-row"><div class="n-fav"><svg width='16' height='16' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg></div><div><div class="site-name">Nordstrom</div><div class="site-url">https://www.nordstrom.com › nordy-club › birthday-perks</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25" style="cursor:pointer">Birthday Perks | The Nordy Club | Nordstrom</div>
+      <div class="snippet">Celebrate your birthday with exclusive perks through The Nordy Club. Receive a Personal Double Points Day and beauty bonuses during your birthday month.</div>
+      <div class="sitelinks">
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">The Nordy Club</div><div class="sitelink-snippet">Overview of benefits, tiers and rewards</div></div>
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">Birthday Perks FAQ</div><div class="sitelink-snippet">How to set up and redeem birthday rewards</div></div>
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">Nordstrom Card</div><div class="sitelink-snippet">Extra birthday bonuses for cardmembers</div></div>
+        <div class="sitelink-item"><div class="sitelink-title" data-track="25" style="cursor:pointer">Nordstrom Rack App</div><div class="sitelink-snippet">Digital birthday perk in the Rack app</div></div>
+      </div>
+    </div>
+
+    <!-- ORGANIC 2 -->
+    <div class="organic">
+      <div class="site-row"><div class="n-fav"><svg width='16' height='16' viewBox='1 1 179 179' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='179' height='179' fill='#000'/><path fill='#F9F9F9' d='M67.445595,79.622795 C67.649559,79.720795 67.853516,79.818802 68.474823,80.433350 C89.138168,100.373215 109.801521,120.313080 129.498566,139.320480 C129.498566,108.329201 129.498566,75.324455 129.498566,42.271591 C124.106285,42.271591 119.032280,42.271591 113.516479,42.271591 C113.516479,62.696438 113.516479,82.882317 113.516479,104.137680 C92.163277,82.386292 71.564590,61.403484 50.506706,39.952923 C50.506706,73.862656 50.506706,106.749680 50.506706,139.742340 C55.935226,139.742340 61.034016,139.742340 66.640823,139.742340 C66.640823,137.771149 66.634499,135.983612 66.641808,134.196136 C66.716705,115.884895 66.793816,97.573662 67.445595,79.622795 z'/></svg></div><div><div class="site-name">Nordstrom Rack</div><div class="site-url">https://www.nordstromrack.com › nordy-club</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25" style="cursor:pointer">The Nordy Club | Nordstrom Rack – Birthday Benefits</div>
+      <div class="snippet">Nordstrom Rack members get a surprise birthday perk in the app every year. Download the Nordstrom Rack App and save your birthday at least 30 days before your birthday month.</div>
+    </div>
+
+    <!-- PEOPLE ALSO ASK -->
+    <div class="paa-block">
+      <div class="paa-title">People also ask</div>
+      <div class="paa-item">What is the Nordstrom birthday reward? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">How do I claim my Nordstrom birthday discount? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">Does Nordstrom Rack have birthday perks? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">How early do I need to add my birthday to Nordstrom? <span style="color:#9aa0a6">∨</span></div>
+      <div class="paa-item">What is the Nordy Club double points birthday day? <span style="color:#9aa0a6">∨</span></div>
+    </div>
+
+    <!-- ORGANIC 3 -->
+    <div class="organic">
+      <div class="site-row"><div class="favicon" style="background:#ff4500">R</div><div><div class="site-name">Reddit</div><div class="site-url">https://www.reddit.com › r › Nordstrom › birthday_reward</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25" style="cursor:pointer">Nordstrom birthday reward — what did you get? : r/Nordstrom</div>
+      <div class="snippet">"Got a $20 Nordstrom Note this year as a cardmember. Last year it was double points. Make sure your birthday is in your profile!" Top comment · 2.8k upvotes.</div>
+    </div>
+    <!-- ORGANIC 4 -->
+    <div class="organic">
+      <div class="site-row"><div class="favicon" style="background:#ff6f00">LL</div><div><div class="site-name">LoyaltyLion</div><div class="site-url">https://loyaltylion.com › blog › nordstrom-loyalty-program</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25" style="cursor:pointer">Nordstrom Loyalty Program Case Study | LoyaltyLion</div>
+      <div class="snippet">The Nordy Club is one of retail's most effective loyalty programs. Birthday perks, double points days and beauty bonuses drive repeat visits and brand loyalty.</div>
+    </div>
+    <!-- ORGANIC 5 -->
+    <div class="organic">
+      <div class="site-row"><div class="favicon" style="background:#1565c0">BI</div><div><div class="site-name">Business Insider</div><div class="site-url">https://www.businessinsider.com › nordstrom-birthday-reward-guide</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25" style="cursor:pointer">Nordstrom Birthday Reward: Everything You Need to Know (2026)</div>
+      <div class="snippet">We break down every birthday perk available through The Nordy Club — from Standard Member double points to Cardmember Nordstrom Notes.</div>
+    </div>
+    <!-- ORGANIC 6 -->
+    <div class="organic">
+      <div class="site-row"><div class="favicon" style="background:#424242">W</div><div><div class="site-name">WikiHow</div><div class="site-url">https://www.wikihow.com › Get-Nordstrom-Birthday-Reward</div></div><span class="three-dot">⋮</span></div>
+      <div class="result-title" data-track="25" style="cursor:pointer">How to Get Your Nordstrom Birthday Reward | wikiHow</div>
+      <div class="snippet">Step 1: Log into Nordstrom. Step 2: Account Settings → Birthday. Step 3: Enter birthday at least 30 days before your birthday month. Step 4: Watch for an email.</div>
+    </div>
+    <!-- RELATED -->
+    <div class="related-block">
+      <div class="related-title">Related searches</div>
+      <div class="related-grid">
+        <div class="related-item">🔍 nordstrom birthday reward 2026</div>
+        <div class="related-item">🔍 nordy club birthday perks</div>
+        <div class="related-item">🔍 nordstrom rack birthday perk app</div>
+        <div class="related-item">🔍 nordstrom birthday double points day</div>
+        <div class="related-item">🔍 nordstrom note birthday cardmember</div>
+        <div class="related-item">🔍 how to add birthday to nordstrom account</div>
+        <div class="related-item">🔍 nordy club tiers benefits</div>
+        <div class="related-item">🔍 nordstrom birthday reward no card</div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <div class="g-wordmark"><span class="b1">G</span><span class="b2">o</span><span class="b3">o</span><span class="b4">g</span><span class="b5">l</span><span class="b6">e</span></div>
+      <div style="display:flex">
+        <div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">3</div>
+        <div class="page-btn">4</div><div class="page-btn">5</div><div class="page-btn">6</div>
+        <div class="page-btn">7</div><div class="page-btn">8</div><div class="page-btn">9</div><div class="page-btn">10</div>
+      </div>
+      <div class="page-nav">Next ›</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="g-footer">
+  <span style="color:#9aa0a6;font-size:12px;width:100%;margin-bottom:4px">🌍 Edinburgh, Scotland — From your IP address</span>
+  <a href="#">Help</a><a href="#">Send feedback</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Settings</a>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-dot" id="toast-dot"></div>
+  <span id="toast-msg">–</span>
+</div>
+
+<script>
+var toastTimer;
+var resultLocked  = false; // locks after AI or organic click
+var showMoreDone  = false; // tracks if show more was clicked
+
+// ── Clipboard ─────────────────────────────────────────────────────────
+function copyCode(code) {
+  var text = String(code);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(function(){ fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+  window.parent.postMessage({ clicked_result: text }, '*');
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var dot = document.getElementById('toast-dot');
+  dot.className = 'toast-dot ' + (type || '');
+  document.getElementById('toast-msg').innerHTML = msg;
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 4000);
+}
+
+// ── Show more toggle — copies 35, does NOT lock ───────────────────────
+function toggleAIMore(e) {
+  if (e) e.stopPropagation();
+  document.getElementById('ai-collapsible').classList.add('expanded');
+  document.getElementById('ai-show-more').style.display = 'none';
+  if (!resultLocked) {
+    showMoreDone = true;
+    copyCode(35);
+    // No toast for show more — silent copy
+  }
+}
+// ── Read more toggle (organic snippets) — no tracking ────────────────
+function toggleOrg(spanId, btnId) {
+  var span = document.getElementById(spanId);
+  var btn  = document.getElementById(btnId);
+  var open = span.classList.toggle('visible');
+  btn.textContent = open ? 'Show less' : 'Read more';
+}
+
+// ── Resolve zone ID ───────────────────────────────────────────────────
+function resolveZoneId(el) {
+  var node = el;
+  while (node && node !== document.body) {
+    if (node.dataset && node.dataset.track) return node.dataset.track;
+    node = node.parentElement;
+  }
+  return null;
+}
+
+// ── Global click listener ─────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  // Skip no-track buttons (show more / read more)
+  if (e.target.closest('[data-no-track]')) return;
+
+  // Once AI or organic is clicked, nothing else registers
+  if (resultLocked) {
+    showToast('🔒 Already recorded — cannot change.', '');
+    return;
+  }
+
+  var zoneId = resolveZoneId(e.target);
+  if (!zoneId) return;
+
+  var code  = zoneId === '15' ? 15 : 25;
+  var label = code === 15 ? 'AI Overview' : 'Organic result';
+  var type  = code === 15 ? 'ai' : 'organic';
+
+  resultLocked = true; // lock — no further changes
+
+  // Highlight clicked zone
+  var clicked = e.target.closest('[data-track]');
+  if (clicked) { clicked.style.opacity='0.7'; setTimeout(function(){ clicked.style.opacity='1'; }, 600); }
+
+  copyCode(code);
+
+  showToast(
+    '✅ <strong>' + label + '</strong> — code: ' +
+    '<code style="background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px;font-size:11px">' + code + '</code> 🔒 locked',
+    type
+  );
+});
+
+// Code 0 is handled by Qualtrics default embedded data value
+// (set to '0' in addOnload before any interaction)
+</script>
+</body>
+</html>
